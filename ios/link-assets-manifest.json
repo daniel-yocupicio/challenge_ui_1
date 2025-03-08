@@ -2,10 +2,6 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "src/assets/fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf",
-      "sha1": "60e9c5ae94bf196a9232512aafc2685c8ce80e40"
-    },
-    {
       "path": "src/assets/fonts/NotoSans-VariableFont_wdth,wght.ttf",
       "sha1": "74b81677712cf4cae2f58c96229889f607de1dd4"
     }
