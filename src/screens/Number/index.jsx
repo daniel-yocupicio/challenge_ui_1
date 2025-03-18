@@ -1,38 +1,61 @@
-import React, { useMemo, useState } from 'react';
-import { Image, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard } from 'react-native';
-import { styles } from './styles';
-import BlurBackground from './BlurBackground';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import { Image, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, SafeAreaView } from 'react-native';
+
+import { SingInContext } from '../../Context/SingInContext';
 import SingInBackground from '../../components/SingInBackground';
-import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
+import BackgroundLayout from '../../components/BackgroundLayout';
 import TextFontFamily from '../../components/TextFontFamily';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from './styles';
+
+import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
+import { useFocusEffect } from '@react-navigation/native';
+import { BlurView } from '@react-native-community/blur';
 
 const backIcon = require('../../assets/icons/back.png');
 const nextIcon = require('../../assets/icons/next.png');
 const countryCode = '+880';
 
-const Number = ({navigation}) => {
-  const [number, setNumber] = useState(countryCode);
-  const [showInfo, setShowInfo] = useState(false);
+const Number = ({navigation, route}) => {
+  const {moveNumberInputUp, moveNumberInputDown, state, focusKeyboard, hideNumberInput, showNumberInput} = useContext(SingInContext);
+
   const caractersInString = useMemo(() => {
-    return number.substring(countryCode.length).length;
-  }, [number]);
+    return state.phone.substring(countryCode.length).length;
+  }, [state]);
+
+  useFocusEffect(useCallback(() => {
+    showNumberInput();
+    moveNumberInputUp();
+    // focusKeyboard();
+  }, [moveNumberInputUp, showNumberInput]));
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      moveNumberInputDown();
+    });
+
+    return unsubscribe;
+  }, [moveNumberInputDown, navigation]);
+
+  const goVerificationScreen = () => {
+    hideNumberInput();
+    navigation.navigate('Verification');
+  };
 
   return (
-    <View style={styles.screenContainer}>
-      <SingInBackground />
-      <Animated.View entering={FadeIn.duration(300).easing(Easing.ease).withCallback(
-        () => {
-          runOnJS(setShowInfo)(true);
-        }
-      )}>
-        <BlurBackground />
+    <BackgroundLayout backgroundColor={'white'} backgroundComponent={<SingInBackground />}>
+      <Animated.View entering={FadeIn.duration(500).easing(Easing.ease)} style={styles.absolute}>
+        <BlurView
+          style={styles.absolute}
+          blurType="light"
+          blurAmount={8}
+          reducedTransparencyFallbackColor="white"
+        />
       </Animated.View>
       <SafeAreaView style={styles.flex1}>
         <KeyboardAvoidingView style={styles.flex1} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            {showInfo ? (
-              <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} style={styles.flex1}>
+          <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
+            <View style={styles.contentContainer}>
+              <Animated.View entering={FadeIn.duration(400).easing(Easing.ease).delay(300)} style={styles.flex1}>
                 <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
                   <Image source={backIcon} style={styles.backIcon} />
                 </TouchableOpacity>
@@ -42,40 +65,19 @@ const Number = ({navigation}) => {
                 <TextFontFamily style={styles.description}>
                   Mobile Number
                 </TextFontFamily>
-                <View>
-                  <View style={styles.inputContainer}>
-                    <Image
-                      style={styles.flag}
-                      source={require('../../assets/icons/flag.png')}
-                      resizeMode="cover"
-                    />
-                    <TextInput
-                      style={styles.input}
-                      value={number}
-                      keyboardType="phone-pad"
-                      onChange={e => {
-                        setNumber(e.nativeEvent.text);
-                      }}
-                    />
-                  </View>
-                </View>
-                {caractersInString > 0 && (
-                  <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.bottomButtons}>
-                    <TouchableOpacity style={styles.nextButton}>
-                      <Image source={nextIcon} style={styles.nextIcon} />
-                    </TouchableOpacity>
-                  </Animated.View>
-                )}
               </Animated.View>
-            ) :
-            (
-              <View />
-            )
-            }
+            </View>
           </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
+        {caractersInString > 0 && (
+          <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.bottomButtons}>
+            <TouchableOpacity style={styles.nextButton} onPress={goVerificationScreen}>
+              <Image source={nextIcon} style={styles.nextIcon} />
+            </TouchableOpacity>
+          </Animated.View>
+        )}
       </SafeAreaView>
-    </View>
+    </BackgroundLayout>
   );
 };
 
