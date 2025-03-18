@@ -25,7 +25,6 @@ const Number = ({navigation, route}) => {
   useFocusEffect(useCallback(() => {
     showNumberInput();
     moveNumberInputUp();
-    // focusKeyboard();
   }, [moveNumberInputUp, showNumberInput]));
 
   useEffect(() => {
@@ -51,14 +50,14 @@ const Number = ({navigation, route}) => {
           reducedTransparencyFallbackColor="white"
         />
       </Animated.View>
-      <SafeAreaView style={styles.flex1}>
+      <SafeAreaView style={[styles.flex1, styles.paddingStatusbar, styles.width]}>
+        <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
+          <Image source={backIcon} style={styles.backIcon} />
+        </TouchableOpacity>
         <KeyboardAvoidingView style={styles.flex1} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
             <View style={styles.contentContainer}>
               <Animated.View entering={FadeIn.duration(400).easing(Easing.ease).delay(300)} style={styles.flex1}>
-                <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
-                  <Image source={backIcon} style={styles.backIcon} />
-                </TouchableOpacity>
                 <TextFontFamily style={styles.title}>
                   Enter your mobile number
                 </TextFontFamily>

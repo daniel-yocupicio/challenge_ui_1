@@ -1,6 +1,8 @@
 import { Dimensions, StyleSheet, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
+const {width, height} = Dimensions.get('window');
+
 export const styles = StyleSheet.create({
     absolute: {
         position: 'absolute',
@@ -11,12 +13,13 @@ export const styles = StyleSheet.create({
       },
     flex1: {
         flex: 1,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+    },
+    paddingStatusbar: {
         paddingTop: StatusBar.currentHeight,
+    },
+    width: {
+        width: Dimensions.get('window').width * 0.8795,
+        alignSelf: 'center',
     },
     contentContainer: {
         width: Dimensions.get('window').width * 0.8795,
@@ -27,7 +30,7 @@ export const styles = StyleSheet.create({
     },
     backButton: {
         marginTop: 8,
-        marginBottom: 65,
+        marginBottom: height * 0.0727,
         width: 10,
     },
     backIcon: {
