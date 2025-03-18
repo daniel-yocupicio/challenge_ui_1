@@ -49,7 +49,6 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>NotoSans-Italic-VariableFont_wdth,wght.ttf</string>
 		<string>NotoSans-VariableFont_wdth,wght.ttf</string>
 	</array>
 </dict>
