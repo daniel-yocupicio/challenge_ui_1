@@ -6,7 +6,8 @@ import SingInBackground from '../../components/SingInBackground';
 import TextFontFamily from '../../components/TextFontFamily';
 import { styles } from './styles';
 import { BlurView } from '@react-native-community/blur';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
+import SelectLocation from '../SelectLocation';
 
 const backIcon = require('../../assets/icons/back.png');
 const nextIcon = require('../../assets/icons/next.png');
@@ -16,6 +17,10 @@ const Verification = ({navigation}) => {
 
   const handleText = (e) => {
     setCode(e.nativeEvent.text);
+  };
+
+  const goSelectLocation = () => {
+    navigation.navigate('SelectLocation');
   };
 
   return (
@@ -32,22 +37,26 @@ const Verification = ({navigation}) => {
         </TouchableOpacity>
         <TextFontFamily style={styles.title}>Enter your 4-digit code</TextFontFamily>
         <TextFontFamily style={styles.description}>Code</TextFontFamily>
-        <TextInput
-          value={code}
-          placeholder="- - - -"
-          placeholderTextColor={'#181725'}
-          style={styles.input}
-          onChange={handleText}
-        />
+        <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut}>
+          <TextInput
+            value={code}
+            placeholder="- - - -"
+            placeholderTextColor={'#181725'}
+            style={styles.input}
+            onChange={handleText}
+          />
+        </Animated.View>
       </SafeAreaView>
-      <View style={styles.optionsbuttons}>
-        <TouchableOpacity>
-          <TextFontFamily style={styles.resendCode}>Resend Code!</TextFontFamily>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.nextButton}>
-          <Image source={nextIcon} style={styles.nextIcon} />
-        </TouchableOpacity>
-      </View>
+      {code.length === 4 && (
+        <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.optionsbuttons}>
+          <TouchableOpacity>
+            <TextFontFamily style={styles.resendCode}>Resend Code!</TextFontFamily>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.nextButton} onPress={goSelectLocation}>
+            <Image source={nextIcon} style={styles.nextIcon} />
+          </TouchableOpacity>
+        </Animated.View>
+      )}
     </BackgroundLayout>
   );
 };

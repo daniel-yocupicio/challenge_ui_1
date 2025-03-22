@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { styles } from './styles';
 
-const BackgroundLayout = ({ children, backgroundComponent, backgroundColor }) => {
+const BackgroundLayout = ({ children, backgroundComponent, backgroundColor = 'white' }) => {
   return (
     <View style={[styles.screenContainer, { backgroundColor }]}>
       <View style={styles.backgroundContainer}>
@@ -15,4 +15,4 @@ const BackgroundLayout = ({ children, backgroundComponent, backgroundColor }) =>
   );
 };
 
-export default BackgroundLayout;
+export default React.memo(BackgroundLayout);

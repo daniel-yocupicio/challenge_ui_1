@@ -1,8 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height;
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 export const styles = StyleSheet.create({
     container: {
@@ -26,9 +26,8 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         height: height * 0.01897,
         marginBottom: height * 0.042187,
-        marginTop: height * 0.131946,
+        marginTop: height * 0.04464,
     },
-
     buttonsContainer: {
         gap: height * 0.02232,
         width: width * 0.8795,
@@ -44,5 +43,8 @@ export const styles = StyleSheet.create({
         width: width * 0.02829,
         height: height * 0.02745,
         marginRight: width * 0.10301,
+    },
+    numberInputContainer: {
+        alignSelf: 'center',
     },
 });

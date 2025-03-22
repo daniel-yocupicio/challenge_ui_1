@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-const {width, height} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
     absolute: {
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         top: 0,
     },
     backButton: {
-        marginTop: 8,
+        marginTop: StatusBar.currentHeight + 8,
         marginBottom: height * 0.0727,
         width: 10,
     },
@@ -48,8 +48,9 @@ export const styles = StyleSheet.create({
         fontSize: RFValue(16, 896),
         color: '#7c7c7c',
         fontWeight: '600',
-        marginTop: 27.58,
-        marginBottom: 10,
+        marginTop: height * 0.03078,
+        marginBottom: height * 0.01116,
+        height: height * 0.032366,
     },
     bottomButtons: {
         position: 'absolute',
@@ -72,4 +73,21 @@ export const styles = StyleSheet.create({
         width: 10,
         height: 18,
     },
+    zero: {
+        height: 0,
+    },
+    box: {
+        marginTop: (height * 0.0727) + (height * 0.03078) + (height * 0.01116) + StatusBar.currentHeight + 8,
+        height: Dimensions.get('window').height * 0.07031 + 18 + height * 0.032366,
+    },
+    numberInputContainer: {
+        marginBottom: height * 0.692912,
+    },
 });
+
+/*
+        marginTop: StatusBar.currentHeight + 8,
+        marginBottom: height * 0.0727,
+        marginTop: height * 0.03078,
+        marginBottom: height * 0.01116,
+*/

@@ -1,19 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Image, TouchableOpacity, StatusBar } from 'react-native';
 import BackgroundLayout from '../../components/BackgroundLayout';
 import TextFontFamily from '../../components/TextFontFamily';
 import { styles } from './styles';
 
 // instaled libraries
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
 import {  FlipInYRight, FlipOutYLeft } from 'react-native-reanimated';
-import { SingInContext } from '../../Context/SingInContext';
 
 const OnBoarding = ({navigation}) => {
-  const {hideNumberInput} = useContext(SingInContext);
   const [hasGreenbg, setHasGreenbg ] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
   const isFocused = useIsFocused();
@@ -21,15 +19,9 @@ const OnBoarding = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('light-content');
+      setIsExiting(false);
     }
   }, [isFocused]);
-
-  useFocusEffect(useCallback(() => {
-    if (isFocused) {
-      setIsExiting(false);
-      hideNumberInput();
-    }
-  }, [isFocused]));
 
   const backgroundComponent = useMemo(() => (
     !isExiting && (
@@ -62,8 +54,8 @@ const OnBoarding = ({navigation}) => {
     >
       {!isExiting && (
         <Animated.View
-          entering={FadeIn.duration(300).easing(Easing.ease).delay(250)}
-          exiting={FadeOut.duration(100).easing(Easing.ease)}
+          entering={FadeIn.duration(300).easing(Easing.ease)}
+          exiting={FadeOut.duration(300).easing(Easing.ease)}
           style={styles.contentContainer}
         >
             <Image style={styles.iconApp} resizeMode="contain" source={require('../../assets/images/Group.png')} />
