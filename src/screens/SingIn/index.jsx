@@ -1,46 +1,41 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import { StatusBar, View } from 'react-native';
-import SingInBackground from '../../components/SingInBackground';
-import BackgroundLayout from '../../components/BackgroundLayout';
+
+import { UIContext } from '../../Context/UIContext/UIContext';
 import TextFontFamily from '../../components/TextFontFamily';
 import SingInButton from '../../components/SingInButton';
 import NumberInput from '../../components/NumberInput';
 import { styles } from './styles';
-import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
+
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   runOnJS,
   FadeIn,
+  Easing,
+  FadeOut,
 } from 'react-native-reanimated';
 
 const FADE_DURATION = 300;
 
 const SingIn = () => {
+  const {showBackground2, hideBackground2} = useContext(UIContext);
+  const [showInput, setShowInput] = useState(true);
   const layoutRef = useRef(undefined);
-  const isFocused = useIsFocused();
-  const navigation = useNavigation();
 
   const fadeOpacityContent = useSharedValue(0);
-  const fadeOpacityInput = useSharedValue(0);
-
-  useFocusEffect(
-    useCallback(() => {
-      fadeOpacityInput.value = withTiming(1, { duration: FADE_DURATION });
-      return () => {
-        fadeOpacityInput.value = 0;
-      };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-  );
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
 
-      fadeOpacityInput.value = withTiming(0, { duration: FADE_DURATION });
       fadeOpacityContent.value = withTiming(0, { duration: FADE_DURATION });
+      setShowInput(false);
+      hideBackground2();
 
       setTimeout(() => {
         navigation.dispatch(e.data.action);
@@ -53,6 +48,7 @@ const SingIn = () => {
 
   useEffect(() => {
     if (isFocused) {
+      showBackground2();
       StatusBar.setBarStyle('dark-content');
       fadeOpacityContent.value = withTiming(1, { duration: FADE_DURATION });
     } else {
@@ -65,33 +61,37 @@ const SingIn = () => {
     opacity: fadeOpacityContent.value,
   }));
 
-  const handleNumberInputFocus = () => {
+  const handleNumberInputFocus = useCallback(() => {
     fadeOpacityContent.value = withTiming(0, { duration: FADE_DURATION }, () => {
-      runOnJS(navigation.navigate)('Number', {y: layoutRef.current});
+      runOnJS(navigation.navigate)('Number', { y: layoutRef.current.y });
     });
-  };
+  }, [fadeOpacityContent, navigation.navigate]);
+
   return (
-    <BackgroundLayout backgroundComponent={<SingInBackground />}>
       <View style={styles.container}>
         <Animated.View style={fadeStyleContent}>
           <TextFontFamily style={styles.title}>
             Get your groceries with nectar
           </TextFontFamily>
         </Animated.View>
-        <Animated.View
-          onLayout={e => {
-            if (!layoutRef.current) {
-              layoutRef.current = e.nativeEvent.layout.y;
-            }
-          }}
-          style={[styles.numberInputContainer]}
-          entering={FadeIn}
-        >
-          <NumberInput
-            showSoftInputOnFocus={false}
-            onFocus={handleNumberInputFocus}
-          />
-        </Animated.View>
+        {showInput ? (
+          <Animated.View
+            onLayout={e => {
+              if (!layoutRef.current) {
+                const {y, height} = e.nativeEvent.layout;
+                layoutRef.current = {y, height};
+              }
+            }}
+            style={[styles.numberInputContainer]}
+            entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
+            exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
+          >
+            <NumberInput
+              showSoftInputOnFocus={false}
+              onFocus={handleNumberInputFocus}
+            />
+          </Animated.View>
+        ) : (<View style={{height: layoutRef.current.height}} />)}
         <Animated.View style={fadeStyleContent}>
           <TextFontFamily style={styles.description}>Or connect with social media</TextFontFamily>
           <View style={styles.buttonsContainer}>
@@ -110,7 +110,6 @@ const SingIn = () => {
           </View>
         </Animated.View>
       </View>
-    </BackgroundLayout>
   );
 };
 

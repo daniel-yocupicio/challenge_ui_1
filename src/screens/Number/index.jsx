@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Image, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, Dimensions } from 'react-native';
 
-import SingInBackground from '../../components/SingInBackground';
-import BackgroundLayout from '../../components/BackgroundLayout';
 import TextFontFamily from '../../components/TextFontFamily';
+import NumberInput from '../../components/NumberInput';
 import { styles } from './styles';
 
 import Animated, { Easing, FadeIn, FadeOut, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
-import { BlurView } from '@react-native-community/blur';
-import NumberInput from '../../components/NumberInput';
+import { UIContext } from '../../Context/UIContext/UIContext';
 
 const backIcon = require('../../assets/icons/back.png');
 const nextIcon = require('../../assets/icons/next.png');
@@ -19,16 +18,17 @@ const {height} = Dimensions.get('window');
 const FADE_DURATION = 400;
 
 const Number = ({route}) => {
-  const navigation = useNavigation();
-  const [showBlur, setShowBlur] = useState(true);
-  const [showContent, setShowContent] = useState(true);
+  const {showBlurBackground2, hideBlurBackground2} = useContext(UIContext);
   const [showBackButton, setShowBackButton] = useState(true);
+  const [showContent, setShowContent] = useState(true);
   const [value, setValue] = useState('+880');
   const inputRef = useRef(undefined);
-  const isFocused = useIsFocused();
   const {y} = route.params;
 
   const translateY = useSharedValue(0);
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
 
   const caractersInString = useMemo(() => {
     return value.substring(countryCode.length).length;
@@ -38,10 +38,10 @@ const Number = ({route}) => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
 
-      setShowBlur(false);
       setShowContent(false);
       setShowBackButton(false);
       translateY.value = withTiming(0, { duration: FADE_DURATION, easing: Easing.ease });
+      hideBlurBackground2();
 
       setTimeout(() => {
         navigation.dispatch(e.data.action);
@@ -59,14 +59,15 @@ const Number = ({route}) => {
   }, [isFocused]);
 
   useFocusEffect(useCallback(() => {
+    showBlurBackground2();
     translateY.value = withTiming(-(height * 0.25 - 8), { duration: FADE_DURATION, easing: Easing.ease });
     inputRef.current.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []));
 
-  const handleGoBack = () => {
+  const handleGoBack = useCallback(() => {
     navigation.goBack();
-  };
+  }, [navigation]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -75,17 +76,6 @@ const Number = ({route}) => {
   });
 
   return (
-    <BackgroundLayout backgroundComponent={<SingInBackground />}>
-      {showBlur && (
-        <Animated.View entering={FadeIn.duration(FADE_DURATION + 200).easing(Easing.ease)} exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)} style={[styles.absolute]}>
-          <BlurView
-            style={styles.absolute}
-            blurType="light"
-            blurAmount={5}
-            reducedTransparencyFallbackColor="white"
-          />
-        </Animated.View>
-      )}
       <View style={styles.flex1}>
         <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
           <View style={styles.flex1}>
@@ -131,7 +121,6 @@ const Number = ({route}) => {
           </Animated.View>
         )}
       </View>
-    </BackgroundLayout>
   );
 };
 

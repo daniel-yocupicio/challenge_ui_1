@@ -1,61 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useEffect, useMemo, useState } from 'react';
-import { Image, TouchableOpacity, StatusBar } from 'react-native';
-import BackgroundLayout from '../../components/BackgroundLayout';
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, TouchableOpacity, StatusBar, View } from 'react-native';
 import TextFontFamily from '../../components/TextFontFamily';
 import { styles } from './styles';
 
 // instaled libraries
 import { useIsFocused } from '@react-navigation/native';
 import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
-import {  FlipInYRight, FlipOutYLeft } from 'react-native-reanimated';
+import { UIContext } from '../../Context/UIContext/UIContext';
 
 const OnBoarding = ({navigation}) => {
-  const [hasGreenbg, setHasGreenbg ] = useState(true);
+  const {showBackground1, hideBackground1} = useContext(UIContext);
   const [isExiting, setIsExiting] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
+      showBackground1();
       StatusBar.setBarStyle('light-content');
       setIsExiting(false);
     }
   }, [isFocused]);
 
-  const backgroundComponent = useMemo(() => (
-    !isExiting && (
-      <Animated.View
-        entering={FlipInYRight.duration(400).easing(Easing.ease)}
-        exiting={FlipOutYLeft.duration(400).easing(Easing.ease).withCallback(() => {
-          runOnJS(navigation.navigate)('SingIn');
-        })}
-        style={styles.animatedContainer}
-      >
-        <Image
-          source={require('../../assets/images/onboarding.png')}
-          resizeMode="cover"
-          style={styles.backgroundImage}
-        />
-      </Animated.View>
-    )
-  ), [isExiting]);
-
-
   const goToSingIn = () => {
-    setHasGreenbg(false);
+    hideBackground1();
     setIsExiting(true);
   };
 
   return (
-    <BackgroundLayout
-      backgroundColor={hasGreenbg ? '#53B175' : '#ffffff'}
-      backgroundComponent={backgroundComponent}
-    >
+    <View style={styles.screen}>
       {!isExiting && (
         <Animated.View
           entering={FadeIn.duration(300).easing(Easing.ease)}
-          exiting={FadeOut.duration(300).easing(Easing.ease)}
+          exiting={FadeOut.duration(300).easing(Easing.ease).withCallback(() => {
+            runOnJS(navigation.navigate)('SingIn');
+          })}
           style={styles.contentContainer}
         >
             <Image style={styles.iconApp} resizeMode="contain" source={require('../../assets/images/Group.png')} />
@@ -68,7 +48,7 @@ const OnBoarding = ({navigation}) => {
             </TouchableOpacity>
         </Animated.View>
       )}
-    </BackgroundLayout>
+    </View>
   );
 };
 

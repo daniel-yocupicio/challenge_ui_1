@@ -9,7 +9,7 @@ function StackNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="StackLoginModule" component={StackLoginModule} options={{headerShown: false}} />
+        <Stack.Screen name="StackLoginModule" component={StackLoginModule} options={{headerShown: false, cardStyle: {backgroundColor: 'transparent'}}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

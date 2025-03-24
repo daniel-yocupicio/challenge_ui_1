@@ -4,6 +4,30 @@ import { RFValue } from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+    },
+    flex1: {
+        flex: 1,
+    },
+    container: {
+        paddingTop: StatusBar.currentHeight,
+        flex: 1,
+        width: Dimensions.get('window').width * 0.8795,
+        alignSelf: 'center',
+    },
+    backButton: {
+        marginTop: 8,
+        marginBottom: height * 0.0727,
+        width: 10,
+    },
+    backIcon: {
+        width: 10,
+        height: 18,
+    },
+});
+
+/*
     absolute: {
         position: 'absolute',
         top: 0,
@@ -75,4 +99,4 @@ export const styles = StyleSheet.create({
         color: '#53B175',
         fontSize: RFValue(18, 896),
     },
-});
+*/

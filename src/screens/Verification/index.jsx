@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Keyboard, SafeAreaView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
-import BackgroundLayout from '../../components/BackgroundLayout';
-import SingInBackground from '../../components/SingInBackground';
 import TextFontFamily from '../../components/TextFontFamily';
 import { styles } from './styles';
-import { BlurView } from '@react-native-community/blur';
+
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-import SelectLocation from '../SelectLocation';
 
 const backIcon = require('../../assets/icons/back.png');
 const nextIcon = require('../../assets/icons/next.png');
@@ -24,13 +21,31 @@ const Verification = ({navigation}) => {
   };
 
   return (
-    <BackgroundLayout backgroundComponent={<SingInBackground />} backgroundColor={'white'}>
-      <BlurView
-        style={styles.absolute}
-        blurType="light"
-        blurAmount={8}
-        reducedTransparencyFallbackColor="white"
-      />
+    <View style={styles.screen}>
+      <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
+            <Image source={backIcon} style={styles.backIcon} />
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+      {code.length === 4 && (
+        <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.optionsbuttons}>
+          <TouchableOpacity>
+            <TextFontFamily style={styles.resendCode}>Resend Code!</TextFontFamily>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.nextButton} onPress={goSelectLocation}>
+            <Image source={nextIcon} style={styles.nextIcon} />
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+    </View>
+  );
+};
+
+export default Verification;
+
+/*
       <SafeAreaView style={styles.container}>
         <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
           <Image source={backIcon} style={styles.backIcon} />
@@ -47,18 +62,4 @@ const Verification = ({navigation}) => {
           />
         </Animated.View>
       </SafeAreaView>
-      {code.length === 4 && (
-        <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.optionsbuttons}>
-          <TouchableOpacity>
-            <TextFontFamily style={styles.resendCode}>Resend Code!</TextFontFamily>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.nextButton} onPress={goSelectLocation}>
-            <Image source={nextIcon} style={styles.nextIcon} />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-    </BackgroundLayout>
-  );
-};
-
-export default Verification;
+*/
