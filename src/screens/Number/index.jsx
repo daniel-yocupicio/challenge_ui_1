@@ -1,64 +1,79 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
-import { Image, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, SafeAreaView } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Image, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, Dimensions } from 'react-native';
 
-import { SingInContext } from '../../Context/SingInContext';
-import SingInBackground from '../../components/SingInBackground';
-import BackgroundLayout from '../../components/BackgroundLayout';
 import TextFontFamily from '../../components/TextFontFamily';
+import NumberInput from '../../components/NumberInput';
 import { styles } from './styles';
 
-import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-import { useFocusEffect } from '@react-navigation/native';
-import { BlurView } from '@react-native-community/blur';
+import Animated, { Easing, FadeIn, FadeOut, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
+import { UIContext } from '../../Context/UIContext/UIContext';
 
-const backIcon = require('../../assets/icons/back.png');
 const nextIcon = require('../../assets/icons/next.png');
 const countryCode = '+880';
 
-const Number = ({navigation, route}) => {
-  const {moveNumberInputUp, moveNumberInputDown, state, focusKeyboard, hideNumberInput, showNumberInput} = useContext(SingInContext);
+const {height} = Dimensions.get('window');
+const FADE_DURATION = 400;
+
+const Number = ({route}) => {
+  const {showBlurBackground2, hideBlurBackground2} = useContext(UIContext);
+  const [showContent, setShowContent] = useState(true);
+  const [value, setValue] = useState('+880');
+  const inputRef = useRef(undefined);
+  const {y} = route.params;
+
+  const translateY = useSharedValue(0);
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
 
   const caractersInString = useMemo(() => {
-    return state.phone.substring(countryCode.length).length;
-  }, [state]);
-
-  useFocusEffect(useCallback(() => {
-    showNumberInput();
-    moveNumberInputUp();
-    // focusKeyboard();
-  }, [moveNumberInputUp, showNumberInput]));
+    return value.substring(countryCode.length).length;
+  }, [value]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-      moveNumberInputDown();
+      e.preventDefault();
+
+      setShowContent(false);
+      translateY.value = withTiming(0, { duration: FADE_DURATION, easing: Easing.ease });
+      hideBlurBackground2();
+
+      setTimeout(() => {
+        navigation.dispatch(e.data.action);
+      }, FADE_DURATION + 1);
     });
 
     return unsubscribe;
-  }, [moveNumberInputDown, navigation]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
 
-  const goVerificationScreen = () => {
-    hideNumberInput();
-    navigation.navigate('Verification');
-  };
+  useEffect(() => {
+    if (isFocused) {
+      setShowContent(true);
+    }
+  }, [isFocused]);
+
+  useFocusEffect(useCallback(() => {
+    showBlurBackground2();
+    translateY.value = withTiming(-(height * 0.25 - 8), { duration: FADE_DURATION, easing: Easing.ease });
+    inputRef.current.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []));
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
 
   return (
-    <BackgroundLayout backgroundColor={'white'} backgroundComponent={<SingInBackground />}>
-      <Animated.View entering={FadeIn.duration(500).easing(Easing.ease)} style={styles.absolute}>
-        <BlurView
-          style={styles.absolute}
-          blurType="light"
-          blurAmount={8}
-          reducedTransparencyFallbackColor="white"
-        />
-      </Animated.View>
-      <SafeAreaView style={styles.flex1}>
-        <KeyboardAvoidingView style={styles.flex1} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
-            <View style={styles.contentContainer}>
-              <Animated.View entering={FadeIn.duration(400).easing(Easing.ease).delay(300)} style={styles.flex1}>
-                <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
-                  <Image source={backIcon} style={styles.backIcon} />
-                </TouchableOpacity>
+      <View style={styles.flex1}>
+        <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
+          <View style={styles.flex1}>
+            {showContent && (
+              <Animated.View entering={FadeIn.duration(FADE_DURATION + 200).easing(Easing.ease)} exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)} style={styles.width}>
                 <TextFontFamily style={styles.title}>
                   Enter your mobile number
                 </TextFontFamily>
@@ -66,18 +81,36 @@ const Number = ({navigation, route}) => {
                   Mobile Number
                 </TextFontFamily>
               </Animated.View>
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+            )}
+
+            <Animated.View style={[{position: 'absolute', top: y, alignSelf: 'center'}, animatedStyle]}>
+              <NumberInput
+                showSoftInputOnFocus={true}
+                ref={inputRef}
+                onChange={e => setValue(e.nativeEvent.text)}
+                value={value}
+              />
+            </Animated.View>
+          </View>
+        </TouchableWithoutFeedback>
         {caractersInString > 0 && (
-          <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.bottomButtons}>
-            <TouchableOpacity style={styles.nextButton} onPress={goVerificationScreen}>
+          <Animated.View
+            entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
+            exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
+            style={styles.bottomButtons}
+          >
+            <TouchableOpacity style={styles.nextButton} onPress={() => {
+              setShowContent(false);
+
+              setTimeout(() => {
+                runOnJS(navigation.navigate)('Verification');
+              }, FADE_DURATION + 1);
+            }}>
               <Image source={nextIcon} style={styles.nextIcon} />
             </TouchableOpacity>
           </Animated.View>
         )}
-      </SafeAreaView>
-    </BackgroundLayout>
+      </View>
   );
 };
 

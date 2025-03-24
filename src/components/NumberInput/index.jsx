@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Image, TextInput, View } from 'react-native';
 import { styles } from './styles';
 
-const NumberInput = ({
-    onFocus = () => {},
-    showSoftInputOnFocus = true,
-    onChange = () => {},
-    onLayout = () => {},
-    value = '+880',
-    ref,
-}) => {
+const NumberInput = forwardRef(({
+  onFocus = () => {},
+  showSoftInputOnFocus = true,
+  onChange = () => {},
+  onLayout = () => {},
+  value = '+880',
+}, ref) => {
+  const refInput = useRef(undefined);
+
+  const openKeyboard = () => {
+    refInput.current.focus();
+  };
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      openKeyboard();
+    },
+  }));
+
   return (
     <View style={styles.container} onLayout={onLayout}>
         <Image
@@ -18,7 +29,7 @@ const NumberInput = ({
           resizeMode="cover"
         />
         <TextInput
-          ref={ref}
+          ref={refInput}
           style={styles.input}
           value={value}
           onFocus={onFocus}
@@ -28,6 +39,6 @@ const NumberInput = ({
         />
     </View>
   );
-};
+});
 
 export default NumberInput;

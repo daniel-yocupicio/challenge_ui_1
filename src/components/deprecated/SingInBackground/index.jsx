@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { Image, View } from 'react-native';
+
 import { styles } from './styles';
 
 const SingInBackground = () => {
@@ -19,4 +20,4 @@ const SingInBackground = () => {
   );
 };
 
-export default SingInBackground;
+export default memo(SingInBackground);

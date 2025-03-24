@@ -10,8 +10,6 @@ const SingInButton = ({
     textButton = '',
     backgroundColor = 'blue',
 }) => {
-  //require();
-
   return (
     <TouchableOpacity style={[styles.btn, {backgroundColor}]} onPress={onPress}>
         <Image source={icon} style={iconStyle} />
