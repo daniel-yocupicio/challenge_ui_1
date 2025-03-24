@@ -43,6 +43,7 @@ export const styles = StyleSheet.create({
         fontWeight: '600',
         width: Dimensions.get('window').width * 0.536452,
         height: Dimensions.get('window').height * 0.07031,
+        marginTop: height * 0.0727,
     },
     description: {
         fontSize: RFValue(16, 896),

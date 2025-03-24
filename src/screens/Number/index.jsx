@@ -10,7 +10,6 @@ import Animated, { Easing, FadeIn, FadeOut, runOnJS, useAnimatedStyle, useShared
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { UIContext } from '../../Context/UIContext/UIContext';
 
-const backIcon = require('../../assets/icons/back.png');
 const nextIcon = require('../../assets/icons/next.png');
 const countryCode = '+880';
 
@@ -19,7 +18,6 @@ const FADE_DURATION = 400;
 
 const Number = ({route}) => {
   const {showBlurBackground2, hideBlurBackground2} = useContext(UIContext);
-  const [showBackButton, setShowBackButton] = useState(true);
   const [showContent, setShowContent] = useState(true);
   const [value, setValue] = useState('+880');
   const inputRef = useRef(undefined);
@@ -39,7 +37,6 @@ const Number = ({route}) => {
       e.preventDefault();
 
       setShowContent(false);
-      setShowBackButton(false);
       translateY.value = withTiming(0, { duration: FADE_DURATION, easing: Easing.ease });
       hideBlurBackground2();
 
@@ -65,10 +62,6 @@ const Number = ({route}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []));
 
-  const handleGoBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
-
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: translateY.value }],
@@ -79,13 +72,6 @@ const Number = ({route}) => {
       <View style={styles.flex1}>
         <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
           <View style={styles.flex1}>
-            {showBackButton && (
-              <Animated.View entering={FadeIn.duration(FADE_DURATION + 200).easing(Easing.ease)} style={styles.width}>
-                <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-                  <Image source={backIcon} style={styles.backIcon} />
-                </TouchableOpacity>
-              </Animated.View>
-            )}
             {showContent && (
               <Animated.View entering={FadeIn.duration(FADE_DURATION + 200).easing(Easing.ease)} exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)} style={styles.width}>
                 <TextFontFamily style={styles.title}>
@@ -108,7 +94,11 @@ const Number = ({route}) => {
           </View>
         </TouchableWithoutFeedback>
         {caractersInString > 0 && (
-          <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut.duration(400).easing(Easing.ease)} style={styles.bottomButtons}>
+          <Animated.View
+            entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
+            exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
+            style={styles.bottomButtons}
+          >
             <TouchableOpacity style={styles.nextButton} onPress={() => {
               setShowContent(false);
 

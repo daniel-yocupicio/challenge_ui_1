@@ -1,7 +1,7 @@
-import { Dimensions, StatusBar, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-const {width, height} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
     screen: {
@@ -11,49 +11,16 @@ export const styles = StyleSheet.create({
         flex: 1,
     },
     container: {
-        paddingTop: StatusBar.currentHeight,
         flex: 1,
         width: Dimensions.get('window').width * 0.8795,
         alignSelf: 'center',
-    },
-    backButton: {
-        marginTop: 8,
-        marginBottom: height * 0.0727,
-        width: 10,
-    },
-    backIcon: {
-        width: 10,
-        height: 18,
-    },
-});
-
-/*
-    absolute: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-    },
-    container: {
-        width: Dimensions.get('window').width * 0.8795,
-        paddingTop: StatusBar.currentHeight,
-        alignSelf: 'center',
-    },
-    backButton: {
-        marginTop: 8,
-        marginBottom: height * 0.0727,
-        width: 10,
-    },
-    backIcon: {
-        width: 10,
-        height: 18,
     },
     title: {
         fontSize: RFValue(26, 1000),
         color: '#030303',
         fontWeight: '600',
         marginBottom: height * 0.03078,
+        marginTop: height * 0.0727,
     },
     description: {
         fontSize: RFValue(16, 896),
@@ -99,4 +66,5 @@ export const styles = StyleSheet.create({
         color: '#53B175',
         fontSize: RFValue(18, 896),
     },
-*/
+});
+
