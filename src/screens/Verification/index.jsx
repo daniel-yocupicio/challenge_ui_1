@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Image, Keyboard, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 import TextFontFamily from '../../components/TextFontFamily';
 import { styles } from './styles';
 
 import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
+import { useFocusEffect } from '@react-navigation/native';
 
 const nextIcon = require('../../assets/icons/next.png');
 const FADE_DURATION = 400;
@@ -14,6 +15,11 @@ const Verification = ({navigation}) => {
   const [code, setCode] = useState('');
 
   const navigationRef = useRef(undefined);
+  const inputRef = useRef(undefined);
+
+  useFocusEffect(useCallback(() => {
+    inputRef.current.focus();
+  }, []));
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
@@ -45,7 +51,7 @@ const Verification = ({navigation}) => {
   };
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.flex1}>
       <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           {showContent && (
@@ -65,6 +71,7 @@ const Verification = ({navigation}) => {
               placeholderTextColor={'#181725'}
               style={styles.input}
               onChange={handleText}
+              ref={inputRef}
             />
           </Animated.View>
           )}

@@ -4,9 +4,6 @@ import { RFValue } from 'react-native-responsive-fontsize';
 const {height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-    },
     flex1: {
         flex: 1,
     },
