@@ -12,7 +12,7 @@ function StackLoginModule() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         animation: 'none',
         cardStyle: {backgroundColor: 'transparent'},
         header: (props) => <CustomHeader {...props} />,

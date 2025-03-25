@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, TouchableOpacity, StatusBar, View } from 'react-native';
+import { Image, StatusBar, View } from 'react-native';
 import TextFontFamily from '../../components/TextFontFamily';
 import { styles } from './styles';
 
@@ -9,6 +9,7 @@ import { styles } from './styles';
 import { useIsFocused } from '@react-navigation/native';
 import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
 import { UIContext } from '../../Context/UIContext/UIContext';
+import Button from '../../components/Button';
 
 const OnBoarding = ({navigation}) => {
   const {showBackground1, hideBackground1} = useContext(UIContext);
@@ -41,11 +42,7 @@ const OnBoarding = ({navigation}) => {
             <Image style={styles.iconApp} resizeMode="contain" source={require('../../assets/images/Group.png')} />
             <TextFontFamily style={styles.textTitle}>Welcome to our store</TextFontFamily>
             <TextFontFamily style={styles.textDescription}>Get your groceries in as fast as one hour</TextFontFamily>
-            <TouchableOpacity onPress={goToSingIn} style={styles.btn}>
-                <TextFontFamily style={styles.textBtn}>
-                    Get started!
-                </TextFontFamily>
-            </TouchableOpacity>
+            <Button onPress={goToSingIn} />
         </Animated.View>
       )}
     </View>

@@ -18,7 +18,8 @@ const Verification = ({navigation}) => {
   const inputRef = useRef(undefined);
 
   useFocusEffect(useCallback(() => {
-    inputRef.current.focus();
+    setShowContent(true);
+    inputRef.current?.focus();
   }, []));
 
   useEffect(() => {
