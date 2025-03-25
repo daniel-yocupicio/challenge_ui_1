@@ -21,9 +21,13 @@ const SelectLocation = ({navigation}) => {
   const scale = useSharedValue(1);
   const margin = useSharedValue(0);
 
-  useFocusEffect(useCallback(() => {
-    setShowContent(true);
-  }, []));
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setShowContent(true);
+      };
+    }, [])
+  );
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -89,32 +93,28 @@ const SelectLocation = ({navigation}) => {
           showsVerticalScrollIndicator={false}
         >
           {showContent && (
-              <Animated.View
-                entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
-                exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease).withCallback(
-                  () => {
-                    runOnJS(callbackHandler)();
-                  }
-                )}
-              >
+            <Animated.View
+              entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
+              exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease).withCallback(
+                () => {
+                  runOnJS(callbackHandler)();
+                }
+              )}
+            >
+              <Animated.View>
                 <Animated.Image source={image} style={[styles.image, animatedStyle]} />
                 <TextFontFamily style={styles.title}>Select your Location</TextFontFamily>
                 <TextFontFamily style={styles.description}>
                   Switch on your location to stay in tune with what's happening in your area
                 </TextFontFamily>
               </Animated.View>
-          )}
-          {showContent && (
-            <Animated.View
-              entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
-              exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
-              style={styles.dataContainer}
-            >
-              <SelectItem title="Your Zone" />
-              <View style={styles.space30} />
-              <SelectItem title="Your Area" />
-              <View style={styles.space40} />
-              <Button text="Submit" onPress={goToLogin} />
+              <Animated.View style={styles.dataContainer}>
+                <SelectItem title="Your Zone" />
+                <View style={styles.space30} />
+                <SelectItem title="Your Area" />
+                <View style={styles.space40} />
+                <Button text="Submit" onPress={goToLogin} />
+              </Animated.View>
             </Animated.View>
           )}
         </ScrollView>
