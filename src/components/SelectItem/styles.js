@@ -14,7 +14,12 @@ export const styles = StyleSheet.create({
         fontSize: RFValue(18, 896),
         flex: 1,
     },
-    list: { backgroundColor: '#fff', marginTop: 5, borderRadius: 5, elevation: 2 },
+    list: {
+        backgroundColor: '#fff',
+        marginTop: 0,
+        borderRadius: 5,
+        elevation: 2,
+    },
     item: { padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' },
     inputContainer: {
         flexDirection: 'row',

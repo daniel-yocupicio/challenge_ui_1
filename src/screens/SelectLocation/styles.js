@@ -8,6 +8,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center', // Para centrar el contenido si es necesario
+        paddingBottom: 20, // Espacio adicional para evitar que el teclado tape elementos
+    },
     image: {
         width: width * 0.542729,
         height: height * 0.1905,
@@ -26,11 +31,11 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         textAlign: 'center',
         color: '#7C7C7C',
+        width: width * 0.879516,
     },
-    infoContainer: {
-        position: 'absolute',
-        bottom: 0,
-        paddingBottom: height * 0.089899,
+    dataContainer: {
+        marginTop: height * 0.09972,
+        alignItems: 'center',
     },
     space40: {
         height: height * 0.04503,

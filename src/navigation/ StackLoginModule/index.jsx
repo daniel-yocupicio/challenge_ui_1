@@ -5,6 +5,7 @@ import Number from '../../screens/Number';
 import Verification from '../../screens/Verification';
 import SelectLocation from '../../screens/SelectLocation';
 import CustomHeader from '../../components/CustomHeader';
+import Login from '../../screens/Login';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ function StackLoginModule() {
       <Stack.Screen name="Number" component={Number} options={{headerShown: true}} />
       <Stack.Screen name="Verification" component={Verification} options={{headerShown: true}} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} options={{headerShown: true}} />
+      <Stack.Screen name="Login" component={Login} options={{headerShown: true}} />
     </Stack.Navigator>
   );
 }

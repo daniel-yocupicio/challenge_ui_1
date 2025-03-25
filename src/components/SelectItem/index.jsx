@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, FlatList, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TextInput, FlatList, TouchableOpacity, Text, Image, Platform, UIManager, LayoutAnimation } from 'react-native';
 import TextFontFamily from '../TextFontFamily';
 import { styles } from './styles';
 
@@ -13,42 +13,49 @@ const data = [
   { id: '5', label: 'Mango' },
 ];
 
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+
 const SelectItem = ({ title, placeholder = 'Type a text' }) => {
-  const [query, setQuery] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
-  const [showList, setShowList] = useState(false);
+    const [query, setQuery] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
+    const [showList, setShowList] = useState(false);
 
-  const handleSearch = (text) => {
-    setQuery(text);
-    if (text) {
-      const filtered = data.filter(item =>
-        item.label.toLowerCase().includes(text.toLowerCase())
-      );
-      setFilteredData(filtered);
-      setShowList(true); // Mostrar la lista al escribir
-    } else {
+    const handleSearch = (text) => {
+      setQuery(text);
+      if (text) {
+        const filtered = data.filter(item =>
+          item.label.toLowerCase().includes(text.toLowerCase())
+        );
+        setFilteredData(filtered);
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setShowList(true);
+      } else {
+        setFilteredData([]);
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setShowList(false);
+      }
+    };
+
+    const handleSelect = (item) => {
+      setQuery(item.label);
       setFilteredData([]);
-      setShowList(false); // Ocultar la lista si el input está vacío
-    }
-  };
-
-  const handleSelect = (item) => {
-    setQuery(item.label);
-    setFilteredData([]);
-    setShowList(false); // Ocultar la lista al seleccionar un item
-  };
-
-  const handlePress = () => {
-    if (!showList) {
-      // Si se abre desde el botón, mostrar toda la lista
-      setFilteredData(data);
-      setShowList(true);
-    } else {
-      // Si ya está abierta, cerrarla
-      setFilteredData([]);
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setShowList(false);
-    }
-  };
+    };
+
+    const handlePress = () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      if (!showList) {
+        setFilteredData(data);
+        setShowList(true);
+      } else {
+        setFilteredData([]);
+        setShowList(false);
+      }
+    };
 
   return (
     <View style={styles.container}>
@@ -69,6 +76,7 @@ const SelectItem = ({ title, placeholder = 'Type a text' }) => {
           data={filteredData}
           keyExtractor={(item) => item.id}
           style={styles.list}
+          scrollEnabled={false}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.item} onPress={() => handleSelect(item)}>
               <Text>{item.label}</Text>
