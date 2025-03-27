@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, UIManager, View } from 'react-native';
 
 import TextFontFamily from '../../components/TextFontFamily';
 import SelectItem from '../../components/SelectItem';
@@ -14,6 +14,30 @@ const image = require('../../assets/images/selectlocation.png');
 const {height} = Dimensions.get('window');
 const FADE_DURATION = 400;
 
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
+
+const zoneData = [
+    { id: '1', label: 'Zone 1' },
+    { id: '2', label: 'Zone 2' },
+    { id: '3', label: 'Zone 3' },
+    { id: '4', label: 'Zone 4' },
+    { id: '5', label: 'Zone 5' },
+    { id: '6', label: 'Zone 6' },
+];
+
+const areaData = [
+  { id: '1', label: 'Area 1' },
+  { id: '2', label: 'Area 2' },
+  { id: '3', label: 'Area 3' },
+  { id: '4', label: 'Area 4' },
+  { id: '5', label: 'Area 5' },
+  { id: '6', label: 'Area 6' },
+];
+
 const SelectLocation = ({navigation}) => {
   const [showContent, setShowContent] = useState(true);
   const navigationRef = useRef(undefined);
@@ -23,9 +47,7 @@ const SelectLocation = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
-      return () => {
-        setShowContent(true);
-      };
+      setShowContent(true);
     }, [])
   );
 
@@ -81,46 +103,47 @@ const SelectLocation = ({navigation}) => {
     }
   };
 
-  return (
-    <KeyboardAvoidingView
-      style={styles.screen}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          {showContent && (
-            <Animated.View
-              entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
-              exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease).withCallback(
-                () => {
-                  runOnJS(callbackHandler)();
-                }
-              )}
+    return (
+      <View style={{flex: 1}}>
+        {showContent && (
+          <Animated.View
+            entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
+            exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease).withCallback(
+              () => {
+                runOnJS(callbackHandler)();
+              }
+            )}
+            style={styles.screen}
+          >
+            <KeyboardAvoidingView
+              style={styles.screen}
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
-              <Animated.View>
-                <Animated.Image source={image} style={[styles.image, animatedStyle]} />
-                <TextFontFamily style={styles.title}>Select your Location</TextFontFamily>
-                <TextFontFamily style={styles.description}>
-                  Switch on your location to stay in tune with what's happening in your area
-                </TextFontFamily>
-              </Animated.View>
-              <Animated.View style={styles.dataContainer}>
-                <SelectItem title="Your Zone" />
-                <View style={styles.space30} />
-                <SelectItem title="Your Area" />
-                <View style={styles.space40} />
-                <Button text="Submit" onPress={goToLogin} />
-              </Animated.View>
-            </Animated.View>
-          )}
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
-  );
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <ScrollView
+                  contentContainerStyle={styles.scrollContainer}
+                  keyboardShouldPersistTaps="handled"
+                  showsVerticalScrollIndicator={false}
+                >
+                  <Animated.Image source={image} style={[styles.image, animatedStyle]} />
+                  <TextFontFamily style={styles.title}>Select your Location</TextFontFamily>
+                  <TextFontFamily style={styles.description}>
+                    Switch on your location to stay in tune with what's happening in your area
+                  </TextFontFamily>
+                  <Animated.View style={styles.dataContainer}>
+                    <SelectItem title="Your Zone" data={zoneData} />
+                    <View style={styles.space30} />
+                    <SelectItem title="Your Area" data={areaData} />
+                    <View style={styles.space40} />
+                    <Button text="Submit" onPress={goToLogin} />
+                  </Animated.View>
+                </ScrollView>
+              </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+          </Animated.View>
+        )}
+      </View>
+    );
 };
 
 

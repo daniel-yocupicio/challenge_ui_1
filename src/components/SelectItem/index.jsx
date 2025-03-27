@@ -5,20 +5,11 @@ import { styles } from './styles';
 
 const icon = require('../../assets/icons/chevrondown.png');
 
-const data = [
-  { id: '1', label: 'Apple' },
-  { id: '2', label: 'Banana' },
-  { id: '3', label: 'Orange' },
-  { id: '4', label: 'Pineapple' },
-  { id: '5', label: 'Mango' },
-];
-
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-
-const SelectItem = ({ title, placeholder = 'Type a text' }) => {
+const SelectItem = ({ title, placeholder = 'Type a text', data = [] }) => {
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState([]);
     const [showList, setShowList] = useState(false);
