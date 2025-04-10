@@ -24,7 +24,7 @@ function StackLoginModule() {
       <Stack.Screen name="Number" component={Number} options={{headerShown: true}} />
       <Stack.Screen name="Verification" component={Verification} options={{headerShown: true}} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} options={{headerShown: true}} />
-      <Stack.Screen name="Login" component={Login} options={{headerShown: true}} />
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   );
 }

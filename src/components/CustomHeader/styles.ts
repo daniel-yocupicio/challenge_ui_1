@@ -1,9 +1,10 @@
-import { Dimensions, StatusBar, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-        paddingTop: StatusBar.currentHeight + 8,
+        zIndex: 3,
+        backgroundColor: 'white',
     },
     content: {
         width: Dimensions.get('window').width * 0.8795,

@@ -1,22 +1,30 @@
-import React, {useReducer, useRef} from 'react';
+import React, {useReducer, useRef, FC} from 'react';
 import { UIContext } from './UIContext';
 import { uiReducer } from './uiReducer';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import Background1 from '../../components/Background1';
-import Background2 from '../../components/Background2';
+import { Dimensions, StatusBar, StyleSheet, View } from 'react-native';
+import Background1, {REFBackground1} from '../../components/Background1';
+import Background2, {REFBackground2} from '../../components/Background2';
 
-const {height, width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('screen');
 
-const INITIAL_STATE = {
+export interface StateContext {
+    bgColor: string,
+}
+
+interface Props {
+    children: React.ReactNode,
+}
+
+const INITIAL_STATE : StateContext = {
     bgColor: '#53B175',
 };
 
-export const UIProvider = ({children}) => {
+export const UIProvider : FC<Props> = ({children}) => {
     const [state, dispatch] = useReducer(uiReducer, INITIAL_STATE);
-    const background1Ref = useRef(undefined);
-    const background2Ref = useRef(undefined);
+    const background1Ref = useRef<REFBackground1>({} as REFBackground1);
+    const background2Ref = useRef<REFBackground2>({} as REFBackground2);
 
-    // Onboarding background (:v)
+    // Onboarding background
     const showBackground1 = () => {
         background1Ref.current.showBackground();
     };
@@ -52,6 +60,7 @@ export const UIProvider = ({children}) => {
             showBlurBackground2,
             hideBlurBackground2,
         }}>
+            <StatusBar translucent={true} backgroundColor={'transparent'} animated={true} />
             <View style={[styles.container, {backgroundColor: state.bgColor}]}>
                 <Background1 ref={background1Ref} />
                 <Background2 ref={background2Ref} />
@@ -65,7 +74,8 @@ const styles = StyleSheet.create({
     container: {
         height,
         width,
-        backgroundColor: 'white',
         position: 'absolute',
+        top: 0,
+        bottom: 0,
     },
 });

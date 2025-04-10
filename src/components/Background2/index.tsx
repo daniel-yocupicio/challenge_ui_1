@@ -1,14 +1,33 @@
-import { BlurView } from '@react-native-community/blur';
+// REACT imports
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { Image, View } from 'react-native';
+
+// npm imports
 import Animated, { Easing, FadeIn, FadeInDown, FadeInUp, FadeOut, FadeOutDown, FadeOutUp } from 'react-native-reanimated';
+import { BlurView } from '@react-native-community/blur';
+
+// local imports
 import { styles } from './styles';
+
+const imgTop = require('../../assets/images/singin.png');
+const imgBottom = require('../../assets/images/bottomsingin.png');
 
 const FADE_DURATION = 400;
 
-const Background2 = forwardRef(({visible = false}, ref) => {
-    const [isVisible, setIsVisible] = useState(visible);
-    const [hasBlur, setHasBlur] = useState(false);
+export interface REFBackground2 {
+  showBackground: () => void,
+  hideBackground: () => void,
+  showBlur: () => void,
+  hideBlur: () => void,
+}
+
+interface Props {
+  visible?: boolean,
+}
+
+const Background2 = forwardRef<REFBackground2, Props>(({visible = false}, ref) => {
+    const [isVisible, setIsVisible] = useState<boolean>(visible);
+    const [hasBlur, setHasBlur] = useState<boolean>(false);
 
     useImperativeHandle(ref, () => ({
         showBackground: () => {
@@ -35,7 +54,7 @@ const Background2 = forwardRef(({visible = false}, ref) => {
               exiting={FadeOutUp.duration(FADE_DURATION).easing(Easing.ease)}
               style={styles.viewTop}>
               <Image
-                source={require('../../assets/images/singin.png')}
+                source={imgTop}
                 style={styles.topImage}
                 resizeMode="cover"
               />
@@ -46,7 +65,7 @@ const Background2 = forwardRef(({visible = false}, ref) => {
               style={styles.viewBottom}
             >
               <Image
-                source={require('../../assets/images/bottomsingin.png')}
+                source={imgBottom}
                 style={styles.bottomImage}
                 resizeMode="cover"
               />
