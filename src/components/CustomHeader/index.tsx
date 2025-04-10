@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const icon = require('../../assets/icons/back.png');
 
-const CustomHeader = ({}) => {
+const CustomHeader : FC = () => {
   const navigation = useNavigation();
   const {top} = useSafeAreaInsets();
 

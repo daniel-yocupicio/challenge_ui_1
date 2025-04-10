@@ -67,6 +67,8 @@ const SingIn = () => {
     });
   }, [fadeOpacityContent, navigation.navigate]);
 
+  console.log('a')
+
   return (
       <View style={styles.container}>
         <Animated.View style={fadeStyleContent}>

@@ -1,13 +1,26 @@
+// npm imports
 import { createStackNavigator } from '@react-navigation/stack';
+
+// local imports
+import SelectLocation from '../../screens/SelectLocation';
+import CustomHeader from '../../components/CustomHeader';
+import Verification from '../../screens/Verification';
 import OnBoarding from '../../screens/OnBoarding';
 import SingIn from '../../screens/SingIn';
 import Number from '../../screens/Number';
-import Verification from '../../screens/Verification';
-import SelectLocation from '../../screens/SelectLocation';
-import CustomHeader from '../../components/CustomHeader';
 import Login from '../../screens/Login';
 
-const Stack = createStackNavigator();
+
+export type RootStackParamsLogin = {
+  OnBoarding: undefined,
+  SingIn: undefined,
+  Number: undefined,
+  Verification: undefined,
+  SelectLocation: undefined,
+  Login: undefined,
+}
+
+const Stack = createStackNavigator<RootStackParamsLogin>();
 
 function StackLoginModule() {
   return (
@@ -16,7 +29,7 @@ function StackLoginModule() {
         headerShown: false,
         animation: 'none',
         cardStyle: {backgroundColor: 'transparent'},
-        header: (props) => <CustomHeader {...props} />,
+        header: CustomHeader,
       }}
     >
       <Stack.Screen name="OnBoarding" component={OnBoarding} />
