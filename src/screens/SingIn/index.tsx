@@ -1,13 +1,9 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+// REACT imports
+import React, {FC, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import { StatusBar, View } from 'react-native';
 
-import { UIContext } from '../../Context/UIContext/UIContext';
-import TextFontFamily from '../../components/TextFontFamily';
-import SingInButton from '../../components/SingInButton';
-import NumberInput from '../../components/NumberInput';
-import { styles } from './styles';
-
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+// npm imports
+import { NavigationProp, useIsFocused, useNavigation } from '@react-navigation/native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -18,15 +14,30 @@ import Animated, {
   FadeOut,
 } from 'react-native-reanimated';
 
-const FADE_DURATION = 300;
+// local imports
+import { UIContext } from '../../Context/UIContext/UIContext';
+import TextFontFamily from '../../components/TextFontFamily';
+import SingInButton from '../../components/SingInButton';
+import NumberInput from '../../components/NumberInput';
+import { styles } from './styles';
+import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
 
-const SingIn = () => {
+const FADE_DURATION : number = 300;
+const imgGoogle = require('../../assets/icons/google.png');
+const imgFacebook = require('../../assets/icons/facebook.png');
+
+interface LayoutRef {
+  y?: number,
+  height?: number,
+}
+
+const SingIn : FC = () => {
   const {showBackground2, hideBackground2} = useContext(UIContext);
-  const [showInput, setShowInput] = useState(true);
-  const layoutRef = useRef(undefined);
+  const [showInput, setShowInput] = useState<boolean>(true);
+  const layoutRef = useRef<LayoutRef>({} as LayoutRef);
 
   const fadeOpacityContent = useSharedValue(0);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamsLogin>>();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -61,13 +72,13 @@ const SingIn = () => {
     opacity: fadeOpacityContent.value,
   }));
 
+  const handleNavigation = useCallback(() => navigation.navigate('Number', { y: layoutRef.current.y as number }), [navigation]);
+
   const handleNumberInputFocus = useCallback(() => {
     fadeOpacityContent.value = withTiming(0, { duration: FADE_DURATION }, () => {
-      runOnJS(navigation.navigate)('Number', { y: layoutRef.current.y });
+      runOnJS(handleNavigation)();
     });
-  }, [fadeOpacityContent, navigation.navigate]);
-
-  console.log('a')
+  }, [fadeOpacityContent, handleNavigation]);
 
   return (
       <View style={styles.container}>
@@ -95,16 +106,18 @@ const SingIn = () => {
           </Animated.View>
         ) : (<View style={{height: layoutRef.current.height}} />)}
         <Animated.View style={fadeStyleContent}>
-          <TextFontFamily style={styles.description}>Or connect with social media</TextFontFamily>
+          <TextFontFamily style={styles.description}>
+            Or connect with social media
+          </TextFontFamily>
           <View style={styles.buttonsContainer}>
             <SingInButton
-              icon={require('../../assets/icons/google.png')}
+              icon={imgGoogle}
               textButton="Continue with Google"
               iconStyle={styles.googleIcon}
               backgroundColor="#5383EC"
             />
             <SingInButton
-              icon={require('../../assets/icons/facebook.png')}
+              icon={imgFacebook}
               textButton="Continue with Facebook"
               iconStyle={styles.facebookIcon}
               backgroundColor="#4A66AC"

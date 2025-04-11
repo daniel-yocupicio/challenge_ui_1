@@ -1,18 +1,35 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Image, TextInput, View } from 'react-native';
+
 import { styles } from './styles';
 
-const NumberInput = forwardRef(({
+const img = require('../../assets/icons/flag.png');
+
+interface Props {
+  onFocus?: () => void,
+  showSoftInputOnFocus?: boolean,
+  onChange?: () => void,
+  onLayout?: () => void,
+  value?: string,
+}
+
+export interface REFNumberInput {
+  focus: () => void
+}
+
+const NumberInput = forwardRef<REFNumberInput, Props>(({
   onFocus = () => {},
   showSoftInputOnFocus = true,
   onChange = () => {},
   onLayout = () => {},
   value = '+880',
 }, ref) => {
-  const refInput = useRef(undefined);
+  const refInput = useRef<TextInput>(null);
 
   const openKeyboard = () => {
-    refInput.current.focus();
+    if (refInput.current !== null) {
+      refInput.current.focus();
+    }
   };
 
   useImperativeHandle(ref, () => ({
@@ -25,7 +42,7 @@ const NumberInput = forwardRef(({
     <View style={styles.container} onLayout={onLayout}>
         <Image
           style={styles.flag}
-          source={require('../../assets/icons/flag.png')}
+          source={img}
           resizeMode="cover"
         />
         <TextInput

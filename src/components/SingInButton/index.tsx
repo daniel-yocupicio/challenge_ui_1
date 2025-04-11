@@ -1,9 +1,17 @@
-import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import React, { FC } from 'react';
+import { Image, ImageSourcePropType, ImageStyle, StyleProp, TouchableOpacity } from 'react-native';
 import TextFontFamily from '../TextFontFamily';
 import { styles } from './styles';
 
-const SingInButton = ({
+interface Props {
+  onPress?: () => void,
+  iconStyle: StyleProp<ImageStyle>,
+  icon: ImageSourcePropType,
+  textButton: string,
+  backgroundColor: string,
+}
+
+const SingInButton : FC<Props> = ({
     onPress = () => {},
     iconStyle = {},
     icon = undefined,

@@ -14,7 +14,7 @@ import Login from '../../screens/Login';
 export type RootStackParamsLogin = {
   OnBoarding: undefined,
   SingIn: undefined,
-  Number: undefined,
+  Number: {y: number},
   Verification: undefined,
   SelectLocation: undefined,
   Login: undefined,

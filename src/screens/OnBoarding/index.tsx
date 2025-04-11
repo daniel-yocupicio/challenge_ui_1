@@ -43,7 +43,7 @@ const OnBoarding : FC = () => {
 
   /**
    * function to handle a navigation to the next screen, this function
-   * is executed when the component animated.view has unmounted
+   * is executed when the component animated.view has unmounted.
    */
   const handleNavigation = () => navigation.navigate('SingIn');
 
