@@ -1,14 +1,14 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { Image, TextInput, View } from 'react-native';
+import { Image, NativeSyntheticEvent, TextInput, TextInputChangeEventData, TextInputFocusEventData, View } from 'react-native';
 
 import { styles } from './styles';
 
 const img = require('../../assets/icons/flag.png');
 
 interface Props {
-  onFocus?: () => void,
+  onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void,
   showSoftInputOnFocus?: boolean,
-  onChange?: () => void,
+  onChange?: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void,
   onLayout?: () => void,
   value?: string,
 }
@@ -18,7 +18,7 @@ export interface REFNumberInput {
 }
 
 const NumberInput = forwardRef<REFNumberInput, Props>(({
-  onFocus = () => {},
+  onFocus,
   showSoftInputOnFocus = true,
   onChange = () => {},
   onLayout = () => {},
@@ -53,6 +53,7 @@ const NumberInput = forwardRef<REFNumberInput, Props>(({
           showSoftInputOnFocus={showSoftInputOnFocus}
           onChange={onChange}
           keyboardType="phone-pad"
+          maxLength={17}
         />
     </View>
   );

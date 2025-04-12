@@ -1,7 +1,7 @@
 import React, {useReducer, useRef, FC} from 'react';
 import { UIContext } from './UIContext';
 import { uiReducer } from './uiReducer';
-import { Dimensions, StatusBar, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Background1, {REFBackground1} from '../../components/Background1';
 import Background2, {REFBackground2} from '../../components/Background2';
 
@@ -60,7 +60,6 @@ export const UIProvider : FC<Props> = ({children}) => {
             showBlurBackground2,
             hideBlurBackground2,
         }}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} animated={true} />
             <View style={[styles.container, {backgroundColor: state.bgColor}]}>
                 <Background1 ref={background1Ref} />
                 <Background2 ref={background2Ref} />

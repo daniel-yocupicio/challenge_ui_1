@@ -26,6 +26,7 @@ const OnBoarding : FC = () => {
   useEffect(() => {
     if (isFocused) {
       StatusBar.setBarStyle('light-content');
+      StatusBar.setTranslucent(true);
       setIsExiting(false);
       showBackground1();
     }
@@ -51,8 +52,8 @@ const OnBoarding : FC = () => {
     <View style={styles.screen}>
       {!isExiting && (
         <Animated.View
-          entering={FadeIn.duration(300).easing(Easing.ease)}
-          exiting={FadeOut.duration(300).easing(Easing.ease).withCallback(() => {
+          entering={FadeIn.duration(300).easing(Easing.ease).delay(150)}
+          exiting={FadeOut.duration(450).easing(Easing.ease).withCallback(() => {
             runOnJS(handleNavigation)();
           })}
           style={styles.contentContainer}

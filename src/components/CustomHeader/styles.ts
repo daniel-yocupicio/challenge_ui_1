@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
         zIndex: 3,
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
     },
     content: {
         width: Dimensions.get('window').width * 0.8795,

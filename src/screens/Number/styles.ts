@@ -85,10 +85,3 @@ export const styles = StyleSheet.create({
         marginBottom: height * 0.692912,
     },
 });
-
-/*
-        marginTop: StatusBar.currentHeight + 8,
-        marginBottom: height * 0.0727,
-        marginTop: height * 0.03078,
-        marginBottom: height * 0.01116,
-*/

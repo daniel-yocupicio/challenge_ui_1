@@ -15,12 +15,13 @@ import Animated, {
 } from 'react-native-reanimated';
 
 // local imports
+import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
 import { UIContext } from '../../Context/UIContext/UIContext';
 import TextFontFamily from '../../components/TextFontFamily';
 import SingInButton from '../../components/SingInButton';
-import NumberInput from '../../components/NumberInput';
+
 import { styles } from './styles';
-import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
+import NumberInput from '../../components/NumberInput';
 
 const FADE_DURATION : number = 300;
 const imgGoogle = require('../../assets/icons/google.png');
@@ -36,10 +37,17 @@ const SingIn : FC = () => {
   const [showInput, setShowInput] = useState<boolean>(true);
   const layoutRef = useRef<LayoutRef>({} as LayoutRef);
 
-  const fadeOpacityContent = useSharedValue(0);
   const navigation = useNavigation<NavigationProp<RootStackParamsLogin>>();
+  const fadeOpacityContent = useSharedValue(0);
   const isFocused = useIsFocused();
 
+  const fadeStyleContent = useAnimatedStyle(() => ({
+    opacity: fadeOpacityContent.value,
+  }));
+
+  /**
+   * Effect to do animations before to return a previous screen.
+   */
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
@@ -57,6 +65,9 @@ const SingIn : FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
+  /**
+   * Effect to animate components and show background.
+   */
   useEffect(() => {
     if (isFocused) {
       showBackground2();
@@ -68,12 +79,15 @@ const SingIn : FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
-  const fadeStyleContent = useAnimatedStyle(() => ({
-    opacity: fadeOpacityContent.value,
-  }));
-
+  /**
+   * Function to handle a navigation to the next screen, this
+   * function is executed when finish fade Opacity Content animation.
+   */
   const handleNavigation = useCallback(() => navigation.navigate('Number', { y: layoutRef.current.y as number }), [navigation]);
 
+  /**
+   * Function to handle focus event in NumberInput component.
+   */
   const handleNumberInputFocus = useCallback(() => {
     fadeOpacityContent.value = withTiming(0, { duration: FADE_DURATION }, () => {
       runOnJS(handleNavigation)();
@@ -90,7 +104,7 @@ const SingIn : FC = () => {
         {showInput ? (
           <Animated.View
             onLayout={e => {
-              if (!layoutRef.current) {
+              if (!layoutRef.current.y) {
                 const {y, height} = e.nativeEvent.layout;
                 layoutRef.current = {y, height};
               }
@@ -121,6 +135,9 @@ const SingIn : FC = () => {
               textButton="Continue with Facebook"
               iconStyle={styles.facebookIcon}
               backgroundColor="#4A66AC"
+              onPress={() => {
+                console.log(layoutRef.current.y, layoutRef.current.height);
+              }}
             />
           </View>
         </Animated.View>

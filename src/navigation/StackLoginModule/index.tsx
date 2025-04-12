@@ -22,6 +22,12 @@ export type RootStackParamsLogin = {
 
 const Stack = createStackNavigator<RootStackParamsLogin>();
 
+const renderHeader = () => {
+  return (
+    <CustomHeader />
+  );
+};
+
 function StackLoginModule() {
   return (
     <Stack.Navigator
@@ -29,7 +35,7 @@ function StackLoginModule() {
         headerShown: false,
         animation: 'none',
         cardStyle: {backgroundColor: 'transparent'},
-        header: CustomHeader,
+        header: renderHeader,
       }}
     >
       <Stack.Screen name="OnBoarding" component={OnBoarding} />

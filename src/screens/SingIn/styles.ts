@@ -12,11 +12,10 @@ export const styles = StyleSheet.create({
         height: height,
     },
     title: {
-        fontSize: RFValue(26, 1000),
+        fontSize: RFValue(24, 896),
         color: '#030303',
         fontWeight: '600',
         width: width * 0.536452,
-        height: height * 0.07031,
         marginLeft: width * 0.05927,
     },
     description: {
@@ -24,9 +23,9 @@ export const styles = StyleSheet.create({
         color: '#7c7c7c',
         fontWeight: '600',
         alignSelf: 'center',
-        height: height * 0.01897,
         marginBottom: height * 0.042187,
         marginTop: height * 0.04464,
+        textAlign: 'center',
     },
     buttonsContainer: {
         gap: height * 0.02232,
