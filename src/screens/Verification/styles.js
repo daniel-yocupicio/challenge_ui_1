@@ -33,10 +33,11 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 0,
         margin: 0,
-        lineHeight: 12,
+        //lineHeight: 12,
         height: Dimensions.get('window').height * 0.032366,
         borderBottomWidth: 1,
         borderColor: '#E2E2E2',
+        letterSpacing: 10,
     },
     optionsbuttons: {
         position: 'absolute',
@@ -46,6 +47,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         width: Dimensions.get('window').width * 0.8795,
         alignSelf: 'center',
+        height: 60,
     },
     nextButton: {
         width: 60,

@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         top: 0,
     },
     backButton: {
-        marginTop: StatusBar.currentHeight + 8,
+        marginTop: (StatusBar?.currentHeight || 0) + 8,
         marginBottom: height * 0.0727,
         width: 10,
     },
@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
         height: 0,
     },
     box: {
-        marginTop: (height * 0.0727) + (height * 0.03078) + (height * 0.01116) + StatusBar.currentHeight + 8,
+        marginTop: (height * 0.0727) + (height * 0.03078) + (height * 0.01116) + (StatusBar.currentHeight || 0) + 8,
         height: Dimensions.get('window').height * 0.07031 + 18 + height * 0.032366,
     },
     numberInputContainer: {

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Image, Keyboard, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
-import TextFontFamily from '../../components/TextFontFamily';
-import { styles } from './styles';
-
 import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
 import { useFocusEffect } from '@react-navigation/native';
+
+import TextFontFamily from '../../components/TextFontFamily';
+import { styles } from './styles';
 
 const nextIcon = require('../../assets/icons/next.png');
 const FADE_DURATION = 400;
@@ -68,30 +68,33 @@ const Verification = ({navigation}) => {
             <TextFontFamily style={styles.description}>Code</TextFontFamily>
             <TextInput
               value={code}
-              placeholder="- - - -"
+              placeholder="----"
               placeholderTextColor={'#181725'}
               style={styles.input}
               onChange={handleText}
               ref={inputRef}
+              keyboardType="number-pad"
+              maxLength={4}
             />
           </Animated.View>
           )}
         </View>
       </TouchableWithoutFeedback>
-      {code.length === 4 && (
-        <Animated.View
-          entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
-          exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
-          style={styles.optionsbuttons}
-        >
-          <TouchableOpacity>
-            <TextFontFamily style={styles.resendCode}>Resend Code!</TextFontFamily>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.nextButton} onPress={goSelectLocation}>
-            <Image source={nextIcon} style={styles.nextIcon} />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
+      <View style={styles.optionsbuttons}>
+        <TouchableOpacity>
+          <TextFontFamily style={styles.resendCode}>Resend Code!</TextFontFamily>
+        </TouchableOpacity>
+        {code.length === 4 && (
+          <Animated.View
+            entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
+            exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
+          >
+            <TouchableOpacity style={styles.nextButton} onPress={goSelectLocation}>
+              <Image source={nextIcon} style={styles.nextIcon} />
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </View>
     </View>
   );
 };

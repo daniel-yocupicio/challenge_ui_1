@@ -1,6 +1,6 @@
 // React imports
-import React, { FC, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Image, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, Dimensions, StyleProp, ViewStyle } from 'react-native';
+import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Image, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, StyleProp, ViewStyle } from 'react-native';
 
 // npm imports
 import Animated, { AnimatedStyle, Easing, FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -16,34 +16,38 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useFormatPhoneNumber from '../../hooks/useFormatPhoneNumber';
 
 const nextIcon = require('../../assets/icons/next.png');
-const countryCode = '+880';
 
-const {height} = Dimensions.get('window');
 const FADE_DURATION = 400;
 
 type LoginScreenRouteProp = RouteProp<RootStackParamsLogin, 'Number'>;
 
 const Number : FC = () => {
+  // hooks from navigation
+  const route = useRoute<LoginScreenRouteProp>();
+  const navigation = useNavigation<NavigationProp<RootStackParamsLogin>>();
+  const isFocused = useIsFocused();
+
+  // hooks from react
   const {showBlurBackground2, hideBlurBackground2} = useContext(UIContext);
   const [showContent, setShowContent] = useState<boolean>(true);
   const inputRef = useRef<REFNumberInput>({} as REFNumberInput);
-  const route = useRoute<LoginScreenRouteProp>();
-  const {y} = route.params;
+  const layoutRef = useRef<number | null>(null);
 
-  const navigation = useNavigation<NavigationProp<RootStackParamsLogin>>();
+  // reanimated hook
   const translateY = useSharedValue(0);
-  const isFocused = useIsFocused();
-  const {top} = useSafeAreaInsets();
-  const headerHeight = top + 18; // 18 = icon height in custom header
 
-  // text phone number
+  // hook from react-native-safe-area-context
+  const {top} = useSafeAreaInsets();
+
+  // custom hook
   const {string, handleNumber} = useFormatPhoneNumber('+880');
 
-  const inputstyle :  StyleProp<AnimatedStyle<StyleProp<ViewStyle>>> = {position: 'absolute', top: y - headerHeight, alignSelf: 'center'};
+  // consts
+  const {y} = route.params; // position from inputnumber
+  const headerHeight = top + 18 + 8; // 18 = icon height in custom header, 8 in margin top
 
-  const caractersInString = useMemo(() => {
-    return string.substring(countryCode.length).length;
-  }, [string]);
+  // styles
+  const inputstyle :  StyleProp<AnimatedStyle<StyleProp<ViewStyle>>> = {position: 'absolute', top: y - headerHeight, alignSelf: 'center'};
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -56,7 +60,6 @@ const Number : FC = () => {
    */
   useFocusEffect(useCallback(() => {
     showBlurBackground2();
-    translateY.value = withTiming(-(height * 0.25 - 8), { duration: FADE_DURATION, easing: Easing.ease });
     inputRef.current.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []));
@@ -95,7 +98,19 @@ const Number : FC = () => {
         <TouchableWithoutFeedback style={styles.flex1} onPress={Keyboard.dismiss}>
           <View style={styles.flex1}>
             {showContent && (
-              <Animated.View entering={FadeIn.duration(FADE_DURATION + 200).easing(Easing.ease)} exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)} style={styles.width}>
+              <Animated.View
+                entering={FadeIn.duration(FADE_DURATION + 200).easing(Easing.ease)}
+                exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
+                style={styles.width}
+                onLayout={e => {
+                  if (layoutRef.current === null) {
+                    const h = e.nativeEvent.layout.height;
+                    layoutRef.current = h;
+
+                    translateY.value = withTiming(-(y - (h + top)), { duration: FADE_DURATION, easing: Easing.ease });
+                  }
+                }}
+              >
                 <TextFontFamily style={styles.title}>
                   Enter your mobile number
                 </TextFontFamily>
@@ -115,7 +130,7 @@ const Number : FC = () => {
             </Animated.View>
           </View>
         </TouchableWithoutFeedback>
-        {caractersInString > 0 && (
+        {string.length === 17 && (
           <Animated.View
             entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
             exiting={FadeOut.duration(FADE_DURATION).easing(Easing.ease)}
@@ -125,9 +140,8 @@ const Number : FC = () => {
               setShowContent(false);
 
               setTimeout(() => {
-                //runOnJS(navigation.navigate)('Verification');
                 navigation.navigate('Verification');
-              }, FADE_DURATION + 1);
+              }, FADE_DURATION );
             }}>
               <Image source={nextIcon} style={styles.nextIcon} />
             </TouchableOpacity>
