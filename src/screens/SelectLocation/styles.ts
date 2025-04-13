@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        justifyContent: 'center', // Para centrar el contenido si es necesario
-        paddingBottom: 20, // Espacio adicional para evitar que el teclado tape elementos
+        justifyContent: 'center',
+        paddingBottom: 20,
     },
     image: {
         width: width * 0.542729,

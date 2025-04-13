@@ -1,44 +1,49 @@
-import React, { useState } from 'react';
-import { View, TextInput, FlatList, TouchableOpacity, Text, Image, Platform, UIManager, LayoutAnimation } from 'react-native';
+import React, { FC, useState } from 'react';
+import { View, TextInput, FlatList, TouchableOpacity, Text, Image } from 'react-native';
+
 import TextFontFamily from '../TextFontFamily';
 import { styles } from './styles';
 
 const icon = require('../../assets/icons/chevrondown.png');
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
+interface ItemType {
+  id: string,
+  label: string,
 }
 
-const SelectItem = ({ title, placeholder = 'Type a text', data = [] }) => {
-    const [query, setQuery] = useState('');
-    const [filteredData, setFilteredData] = useState([]);
-    const [showList, setShowList] = useState(false);
+interface Props {
+  title: string,
+  placeholder: string,
+  data: ItemType[],
+}
 
-    const handleSearch = (text) => {
+
+const SelectItem : FC<Props> = ({ title, placeholder = 'Type a text', data = [] }) => {
+    const [query, setQuery] = useState<string>('');
+    const [filteredData, setFilteredData] = useState<ItemType[]>([]);
+    const [showList, setShowList] = useState<boolean>(false);
+
+    const handleSearch = (text : string) => {
       setQuery(text);
       if (text) {
         const filtered = data.filter(item =>
           item.label.toLowerCase().includes(text.toLowerCase())
         );
         setFilteredData(filtered);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setShowList(true);
       } else {
         setFilteredData([]);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setShowList(false);
       }
     };
 
-    const handleSelect = (item) => {
+    const handleSelect = (item : ItemType) => {
       setQuery(item.label);
       setFilteredData([]);
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setShowList(false);
     };
 
     const handlePress = () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       if (!showList) {
         setFilteredData(data);
         setShowList(true);
@@ -65,7 +70,7 @@ const SelectItem = ({ title, placeholder = 'Type a text', data = [] }) => {
       {showList && filteredData.length > 0 && (
         <FlatList
           data={filteredData}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
           style={styles.list}
           scrollEnabled={false}
           renderItem={({ item }) => (
