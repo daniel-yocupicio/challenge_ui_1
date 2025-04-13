@@ -1,27 +1,39 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Image, Keyboard, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+// REACT imports
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { Image, Keyboard, NativeSyntheticEvent, TextInput, TextInputChangeEventData, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
+// npm imports
 import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
-import { useFocusEffect } from '@react-navigation/native';
+import { NavigationAction, NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 
+// local imports
+import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
 import TextFontFamily from '../../components/TextFontFamily';
 import { styles } from './styles';
 
 const nextIcon = require('../../assets/icons/next.png');
 const FADE_DURATION = 400;
 
-const Verification = ({navigation}) => {
-  const [showContent, setShowContent] = useState(true);
-  const [code, setCode] = useState('');
+const Verification : FC = () => {
+  const [showContent, setShowContent] = useState<boolean>(true);
+  const [code, setCode] = useState<string>('');
 
-  const navigationRef = useRef(undefined);
-  const inputRef = useRef(undefined);
+  const navigationRef = useRef<NavigationAction | null>(null);
+  const inputRef = useRef<TextInput | null>(null);
 
+  const navigation = useNavigation<NavigationProp<RootStackParamsLogin>>();
+
+  /**
+   * effect to show components and open keyboard.
+   */
   useFocusEffect(useCallback(() => {
     setShowContent(true);
     inputRef.current?.focus();
   }, []));
 
+  /**
+   * effect to handle goback event
+   */
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
@@ -34,18 +46,27 @@ const Verification = ({navigation}) => {
     return unsubscribe;
   }, [navigation]);
 
-  const handleText = (e) => {
+  /**
+   * function to set text in code state.
+   */
+  const handleText = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
     setCode(e.nativeEvent.text);
   };
 
+  /**
+   * function to quit view component and start the navigation to selectlocation screen.
+   */
   const goSelectLocation = () => {
     setShowContent(false);
   };
 
+  /**
+   * function to handle type of navigation, it can be go back o navigation to the next screen.
+   */
   const callbackHandler = () => {
     if (navigationRef.current) {
       navigation.dispatch(navigationRef.current);
-      navigationRef.current = undefined;
+      navigationRef.current = null;
     } else {
       navigation.navigate('SelectLocation');
     }
@@ -67,12 +88,12 @@ const Verification = ({navigation}) => {
             <TextFontFamily style={styles.title}>Enter your 4-digit code</TextFontFamily>
             <TextFontFamily style={styles.description}>Code</TextFontFamily>
             <TextInput
+              ref={inputRef}
               value={code}
               placeholder="----"
               placeholderTextColor={'#181725'}
               style={styles.input}
               onChange={handleText}
-              ref={inputRef}
               keyboardType="number-pad"
               maxLength={4}
             />
