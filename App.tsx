@@ -8,17 +8,15 @@
 import React from 'react';
 import 'react-native-gesture-handler';
 import StackNavigator from './src/navigation/StackNavigator';
-import { StatusBar } from 'react-native';
 import { UIProvider } from './src/Context/UIContext/UIProvider';
+import { StatusBar } from 'react-native';
 
 function App(): React.JSX.Element {
   return (
-    <>
-      <StatusBar translucent={true} backgroundColor={'transparent'} animated={true} />
       <UIProvider>
+        <StatusBar translucent={true} backgroundColor={'transparent'} animated={true} />
         <StackNavigator />
       </UIProvider>
-    </>
   );
 }
 
