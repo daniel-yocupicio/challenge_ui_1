@@ -7,6 +7,8 @@ export interface ContextValue {
     hideBackground2: () => void,
     showBlurBackground2: () => void,
     hideBlurBackground2: () => void,
+    showBackground3: () => void,
+    hideBackground3: () => void,
 }
 
 export const UIContext = createContext({} as ContextValue);

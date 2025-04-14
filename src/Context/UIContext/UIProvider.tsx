@@ -4,6 +4,7 @@ import { uiReducer } from './uiReducer';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Background1, {REFBackground1} from '../../components/Background1';
 import Background2, {REFBackground2} from '../../components/Background2';
+import Background3, { REFBackground3 } from '../../components/Background3';
 
 const {height, width} = Dimensions.get('screen');
 
@@ -23,6 +24,7 @@ export const UIProvider : FC<Props> = ({children}) => {
     const [state, dispatch] = useReducer(uiReducer, INITIAL_STATE);
     const background1Ref = useRef<REFBackground1>({} as REFBackground1);
     const background2Ref = useRef<REFBackground2>({} as REFBackground2);
+    const background3Ref = useRef<REFBackground3>({} as REFBackground3);
 
     // Onboarding background
     const showBackground1 = () => {
@@ -51,6 +53,15 @@ export const UIProvider : FC<Props> = ({children}) => {
         background2Ref.current.hideBlur();
     };
 
+    // login background
+    const showBackground3 = () => {
+        background3Ref.current.showBackground();
+    };
+    const hideBackground3 = () => {
+        dispatch({type: 'set bgColor', payload: '#ffffff'});
+        background3Ref.current.hideBackground();
+    };
+
     return (
         <UIContext.Provider value={{
             showBackground1,
@@ -59,10 +70,13 @@ export const UIProvider : FC<Props> = ({children}) => {
             hideBackground2,
             showBlurBackground2,
             hideBlurBackground2,
+            showBackground3,
+            hideBackground3,
         }}>
             <View style={[styles.container, {backgroundColor: state.bgColor}]}>
                 <Background1 ref={background1Ref} />
                 <Background2 ref={background2Ref} />
+                <Background3 ref={background3Ref} />
             </View>
             {children}
         </UIContext.Provider>

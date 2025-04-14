@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // local imports
 import Home from '../../screens/Home';
+import { useNavigation } from '@react-navigation/native';
 
 
 export type RootStackParamsApp = {
@@ -12,6 +13,11 @@ export type RootStackParamsApp = {
 const Stack = createStackNavigator<RootStackParamsApp>();
 
 function AppStack() {
+  console.log('appstack');
+  const navigation = useNavigation();
+
+  console.log(navigation.getState());
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -19,6 +25,7 @@ function AppStack() {
         animation: 'none',
         cardStyle: {backgroundColor: 'transparent'},
       }}
+      initialRouteName="Home"
     >
       <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
