@@ -9,11 +9,13 @@ import OnBoarding from '../../screens/OnBoarding';
 import SingIn from '../../screens/SingIn';
 import Number from '../../screens/Number';
 import Login from '../../screens/Login';
+import SignUp from '../../screens/signUp';
 
 
 export type RootStackParamsLogin = {
   OnBoarding: undefined,
   SingIn: undefined,
+  SignUp: undefined,
   Number: {y: number},
   Verification: undefined,
   SelectLocation: undefined,
@@ -44,6 +46,7 @@ function StackLoginModule() {
       <Stack.Screen name="Verification" component={Verification} options={{headerShown: true}} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} options={{headerShown: true}} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
   );
 }
