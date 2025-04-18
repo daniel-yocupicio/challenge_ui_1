@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { Image, NativeSyntheticEvent, TextInput, TextInputChangeEventData, TextInputFocusEventData, View } from 'react-native';
 
 import { styles } from './styles';
@@ -26,11 +26,13 @@ const NumberInput = forwardRef<REFNumberInput, Props>(({
 }, ref) => {
   const refInput = useRef<TextInput>(null);
 
-  const openKeyboard = () => {
+  console.log('render input');
+
+  const openKeyboard = useCallback(() => {
     if (refInput.current !== null) {
       refInput.current.focus();
     }
-  };
+  }, []);
 
   useImperativeHandle(ref, () => ({
     focus: () => {
@@ -54,9 +56,10 @@ const NumberInput = forwardRef<REFNumberInput, Props>(({
           onChange={onChange}
           keyboardType="phone-pad"
           maxLength={17}
+          numberOfLines={1}
         />
     </View>
   );
 });
 
-export default NumberInput;
+export default React.memo(NumberInput);

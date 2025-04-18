@@ -1,5 +1,5 @@
 // react imports
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 
 // npm imports
@@ -24,38 +24,47 @@ const OnBoarding : FC = () => {
    * and set true value in state to show components.
    */
   useEffect(() => {
+    // un render al salir es aca
     if (isFocused) {
       StatusBar.setBarStyle('light-content');
-      StatusBar.setTranslucent(true);
       setIsExiting(false);
       showBackground1();
     }
+
+    () => {};
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, []);
 
   /**
    * function to change a state value to unmount a component from the tree,
    * the expected component to unmount is an animated.view.
    */
-  const goToSingIn = () => {
-    setIsExiting(true);
-    hideBackground1();
-  };
+  const goToSingIn = useCallback(() => {
+    if (!isExiting) {
+      setIsExiting(true);
+      hideBackground1();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * function to handle a navigation to the next screen, this function
    * is executed when the component animated.view has unmounted.
    */
-  const handleNavigation = () => navigation.navigate('SingIn');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleNavigation = useCallback(() => navigation.navigate('SingIn'), []);
+
+  // exit animation const
+  const exitAnimation = FadeOut.duration(450).easing(Easing.ease).withCallback(() => {
+    runOnJS(handleNavigation)();
+  });
 
   return (
     <View style={styles.screen}>
       {!isExiting && (
         <Animated.View
           entering={FadeIn.duration(300).easing(Easing.ease).delay(150)}
-          exiting={FadeOut.duration(450).easing(Easing.ease).withCallback(() => {
-            runOnJS(handleNavigation)();
-          })}
+          exiting={exitAnimation}
           style={styles.contentContainer}
         >
             <Image style={styles.iconApp} resizeMode="contain" source={require('../../assets/images/Group.png')} />
@@ -68,4 +77,4 @@ const OnBoarding : FC = () => {
   );
 };
 
-export default OnBoarding;
+export default React.memo(OnBoarding);

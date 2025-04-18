@@ -89,9 +89,13 @@ const Number : FC = () => {
    */
   useEffect(() => {
     if (isFocused) {
-      setShowContent(true);
+      if (!showContent) {
+        setShowContent(true);
+      }
     }
-  }, [isFocused]);
+  }, [isFocused, showContent]);
+
+  console.log('render number');
 
   return (
       <View style={styles.flex1}>
@@ -107,7 +111,10 @@ const Number : FC = () => {
                     const h = e.nativeEvent.layout.height;
                     layoutRef.current = h;
 
-                    translateY.value = withTiming(-(y - (h + top)), { duration: FADE_DURATION, easing: Easing.ease });
+                    translateY.value = withTiming(0);
+                    setTimeout(() => {
+                      translateY.value = withTiming(-(y - (h + headerHeight)), { duration: FADE_DURATION, easing: Easing.ease });
+                    }, 50);
                   }
                 }}
               >
@@ -151,4 +158,4 @@ const Number : FC = () => {
   );
 };
 
-export default Number;
+export default React.memo(Number);

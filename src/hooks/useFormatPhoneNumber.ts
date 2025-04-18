@@ -1,18 +1,19 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
+// custom hook to add a number format to my string
 const useFormatPhoneNumber = (initialNumber: string = '+880') => {
     const [string, setString] = useState<string>(initialNumber);
 
-    const handleNumber = (text: string) => {
+    const handleNumber = useCallback((text: string) => {
         if (text.length < initialNumber.length) {
             return; // dont save any changes in my string.
         }
 
-    // Obtenemos solo los dígitos después del código inicial
+    // get only the digits after the initial code
     const newString = text.slice(initialNumber.length);
-    const cleaned = newString.replace(/\D/g, ''); // eliminar no-dígitos
+    const cleaned = newString.replace(/\D/g, ''); // remove non-digits
 
-    // Aplicar formateo dinámico
+    // Apply dynamic formatting
     let formatted = initialNumber;
 
     if (cleaned.length > 0) {
@@ -26,7 +27,7 @@ const useFormatPhoneNumber = (initialNumber: string = '+880') => {
     }
 
     setString(formatted.trim());
-    };
+    }, [initialNumber]);
 
     return {
         string,

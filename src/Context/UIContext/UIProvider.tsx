@@ -1,4 +1,4 @@
-import React, {useReducer, useRef, FC} from 'react';
+import React, {useReducer, useRef, FC, useCallback} from 'react';
 import { UIContext } from './UIContext';
 import { uiReducer } from './uiReducer';
 import { Dimensions, StyleSheet, View } from 'react-native';
@@ -27,14 +27,14 @@ export const UIProvider : FC<Props> = ({children}) => {
     const background3Ref = useRef<REFBackground3>({} as REFBackground3);
 
     // Onboarding background
-    const showBackground1 = () => {
+    const showBackground1 = useCallback(() => {
         background1Ref.current.showBackground();
-    };
+    }, []);
 
-    const hideBackground1 = () => {
+    const hideBackground1 = useCallback(() => {
         dispatch({type: 'set bgColor', payload: '#ffffff'});
         background1Ref.current.hideBackground();
-    };
+    }, []);
 
     // SingIn bg (Number, Verification, SelectLocation, etc.)
     const showBackground2 = () => {

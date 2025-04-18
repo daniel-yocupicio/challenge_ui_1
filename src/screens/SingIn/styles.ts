@@ -14,14 +14,14 @@ export const styles = StyleSheet.create({
     title: {
         fontSize: RFValue(24, 896),
         color: '#030303',
-        fontWeight: '600',
+        fontWeight: '400',
         width: width * 0.536452,
         marginLeft: width * 0.05927,
     },
     description: {
         fontSize: RFValue(14, 896),
         color: '#7c7c7c',
-        fontWeight: '600',
+        fontWeight: '400',
         alignSelf: 'center',
         marginBottom: height * 0.042187,
         marginTop: height * 0.04464,

@@ -135,9 +135,7 @@ const SingIn : FC = () => {
               textButton="Continue with Facebook"
               iconStyle={styles.facebookIcon}
               backgroundColor="#4A66AC"
-              onPress={() => {
-                console.log(layoutRef.current.y, layoutRef.current.height);
-              }}
+              onPress={() => {}}
             />
           </View>
         </Animated.View>
