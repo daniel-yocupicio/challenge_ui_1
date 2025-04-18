@@ -11,6 +11,6 @@ export default TextFontFamily;
 
 const styles = StyleSheet.create({
     styles: {
-        fontFamily: 'NotoSans-VariableFont_wdth,wght.ttf',
+        fontFamily: 'NotoSans-VariableFont_wdth,wght',
     },
 });

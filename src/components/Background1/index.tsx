@@ -3,7 +3,7 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { Image } from 'react-native';
 
 // npm imports
-import Animated, { Easing, FlipInYRight, FlipOutYLeft } from 'react-native-reanimated';
+import Animated, { Easing, FadeIn, FadeOut} from 'react-native-reanimated';
 
 // local imports
 import { styles } from './styles';
@@ -34,8 +34,8 @@ const Background1 = forwardRef<REFBackground1, Props>(({visible = false}, ref) =
     if (isVisible) {
         return (
             <Animated.View
-                entering={FlipInYRight.duration(400).easing(Easing.ease)}
-                exiting={FlipOutYLeft.duration(400).easing(Easing.ease)}
+                entering={FadeIn.duration(300).easing(Easing.ease)}
+                exiting={FadeOut.duration(300).easing(Easing.ease)}
                 style={[styles.container]}
             >
                 <Image source={image} style={styles.image} resizeMode="cover" />
