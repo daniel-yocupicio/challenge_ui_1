@@ -62,6 +62,7 @@ const SelectItem : FC<Props> = ({ title, placeholder = 'Type a text', data = [] 
           placeholder={placeholder}
           value={query}
           onChangeText={handleSearch}
+          placeholderTextColor={'#181725'}
         />
         <TouchableOpacity style={styles.iconContainer} onPress={handlePress}>
           <Image source={icon} style={styles.icon} />

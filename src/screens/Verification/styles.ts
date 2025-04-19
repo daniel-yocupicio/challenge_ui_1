@@ -15,14 +15,14 @@ export const styles = StyleSheet.create({
     title: {
         fontSize: RFValue(26, 1000),
         color: '#030303',
-        fontWeight: '600',
+        fontWeight: '400',
         marginBottom: height * 0.03078,
         marginTop: height * 0.0727,
     },
     description: {
         fontSize: RFValue(16, 896),
         color: '#7c7c7c',
-        fontWeight: '600',
+        fontWeight: '400',
         marginBottom: height * 0.01116,
     },
     input: {

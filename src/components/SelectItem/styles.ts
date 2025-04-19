@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
         marginTop: height * 0.01116,
         fontSize: RFValue(18, 896),
         flex: 1,
+        letterSpacing: 0,
     },
     list: {
         backgroundColor: '#fff',

@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     title: {
         fontSize: RFValue(26, 1000),
         color: '#030303',
-        fontWeight: '600',
+        fontWeight: '400',
         width: Dimensions.get('window').width * 0.536452,
         height: Dimensions.get('window').height * 0.07031,
         marginTop: height * 0.0727,
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
     description: {
         fontSize: RFValue(16, 896),
         color: '#7c7c7c',
-        fontWeight: '600',
+        fontWeight: '400',
         marginTop: height * 0.03078,
         marginBottom: height * 0.01116,
         height: height * 0.032366,
