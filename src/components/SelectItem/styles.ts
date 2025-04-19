@@ -8,11 +8,14 @@ export const styles = StyleSheet.create({
         width: width * 0.879516,
     },
     input: {
-        borderRadius: 5,
         fontFamily: 'NotoSans-VariableFont_wdth,wght',
-        marginTop: height * 0.01116,
         fontSize: RFValue(18, 896),
+        color: '#030303',
         flex: 1,
+        paddingVertical: 0,
+        textAlignVertical: 'center',
+        includeFontPadding: false,
+        height: Dimensions.get('window').height * 0.0441,
         letterSpacing: 0,
     },
     list: {

@@ -21,8 +21,8 @@ export const styles = StyleSheet.create({
         color: '#030303',
         flex: 1,
         paddingVertical: 0,
-        textAlignVertical: 'center', 
-        includeFontPadding: false,  
+        textAlignVertical: 'center',
+        includeFontPadding: false,
         height: Dimensions.get('window').height * 0.0441,
     },
 });

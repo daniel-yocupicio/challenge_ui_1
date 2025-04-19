@@ -11,9 +11,9 @@ import { TextInput } from 'react-native-gesture-handler';
 import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
 import { UIContext } from '../../Context/UIContext/UIContext';
 import TextFontFamily from '../../components/TextFontFamily';
+import { useUserStore } from '../../store/user';
 import Button from '../../components/Button';
 import { styles } from './styles';
-import { useUserStore } from '../../store/user';
 
 const logo = require('../../assets/icons/logo.png');
 const eye = require('../../assets/icons/eye.png');
@@ -30,6 +30,7 @@ const Login : FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamsLogin>>();
   const isFocused = useIsFocused();
 
+  // zustand
   const login = useUserStore(state => state.login);
 
   useFocusEffect(useCallback(() => {

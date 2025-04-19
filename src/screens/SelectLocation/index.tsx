@@ -7,11 +7,11 @@ import Animated, { Easing, FadeIn, FadeOut, runOnJS, useAnimatedStyle, useShared
 import { NavigationAction, NavigationProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 
 // local imports
+import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
 import TextFontFamily from '../../components/TextFontFamily';
 import SelectItem from '../../components/SelectItem';
 import Button from '../../components/Button';
 import { styles } from './styles';
-import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
 
 
 const image = require('../../assets/images/selectlocation.png');
@@ -120,7 +120,7 @@ const SelectLocation : FC = () => {
   };
 
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.screen}>
         {showContent && (
           <Animated.View
             entering={FadeIn.duration(FADE_DURATION).easing(Easing.ease)}
