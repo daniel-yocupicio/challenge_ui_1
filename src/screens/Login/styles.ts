@@ -26,45 +26,46 @@ export const styles = StyleSheet.create({
         fontSize: RFValue(16, 896),
         width: scaleWidth(364.12),
         alignSelf: 'center',
+        marginBottom: scaleHeight(40),
     },
-    emailcontainer: {
+    inputContainer: {
+        borderBottomColor: '#e2e2e2',
+        borderBottomWidth: 1,
+        paddingBottom: scaleHeight(10.55),
         width: scaleWidth(364.12),
-        alignSelf: 'center',
-        marginTop: scaleHeight(40),
+        display: 'flex',
     },
-    emaillabel: {
+    inputLabel: {
         color: '#7c7c7c',
         fontSize: RFValue(16, 896),
         marginBottom: scaleHeight(10),
+        width: scaleWidth(364.12),
     },
-    emailinput: {
-        color: '#181725',
-        fontSize: RFValue(18, 896),
-        padding: 0,
-        borderBottomColor: '#e2e2e2',
-        borderBottomWidth: 1,
+    input: {
         fontFamily: 'NotoSans-VariableFont_wdth,wght',
-        paddingBottom: 0,
+        fontSize: RFValue(18, 896),
+        paddingVertical: 0,
+        textAlignVertical: 'center',
+        includeFontPadding: false,
+        letterSpacing: 0,
+        height: scaleHeight(29),
+        color: '#181725',
+        flex: 1,
+    },
+    securePassword: {
+        flexDirection: 'row',
+        width: scaleWidth(364.12),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    eyeContainer: {
+        width: scaleWidth(25),
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     passwordcontainer: {
-        width: scaleWidth(364.12),
-        alignSelf: 'center',
         marginTop: scaleHeight(30),
         marginBottom: scaleHeight(30),
-    },
-    passwordlabel: {
-        color: '#7c7c7c',
-        fontSize: RFValue(16, 896),
-        marginBottom: scaleHeight(10),
-    },
-    passwordinput: {
-        color: '#181725',
-        fontSize: RFValue(18, 896),
-        padding: 0,
-        borderBottomColor: '#e2e2e2',
-        borderBottomWidth: 1,
-        fontFamily: 'NotoSans-VariableFont_wdth,wght',
-        paddingBottom: 0,
     },
     forgotPassword: {
         fontSize: RFValue(14, 896),
@@ -89,14 +90,14 @@ export const styles = StyleSheet.create({
     inputIconContainer: {
         justifyContent: 'center',
     },
-    eyeContainer: {
+    /*eyeContainer: {
         position: 'absolute',
         right: 0,
         height: '100%',
         justifyContent: 'center',
         width: scaleWidth(22),
         alignItems: 'center',
-    },
+    },*/
     eye: {
         width: scaleWidth(19.93),
         height: scaleHeight(18.92),

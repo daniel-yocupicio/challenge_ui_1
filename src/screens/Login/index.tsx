@@ -123,20 +123,26 @@ const Login : FC = () => {
               <Image source={logo} style={styles.logo} resizeMode="contain" />
               <TextFontFamily style={styles.title}>Login</TextFontFamily>
               <TextFontFamily style={styles.subtitle}>Enter your emails and password</TextFontFamily>
-              <View style={styles.emailcontainer}>
-                <TextFontFamily style={styles.emaillabel}>Email</TextFontFamily>
-                <TextInput placeholder="Type your e-mail" style={styles.emailinput} />
+
+
+              <View style={styles.inputContainer}>
+                <TextFontFamily style={styles.inputLabel}>Email</TextFontFamily>
+                <TextInput placeholderTextColor="#7c7c7c" placeholder="Type your e-mail" style={styles.input} />
               </View>
+
               <View style={styles.passwordcontainer}>
-                <TextFontFamily style={styles.passwordlabel}>Password</TextFontFamily>
-                <View style={styles.inputIconContainer}>
-                  <TextInput placeholder="Type your password" secureTextEntry={securePassword} style={styles.passwordinput} />
-                  <TouchableOpacity style={styles.eyeContainer} onPress={handlePassword}>
-                    <Image source={eye} style={styles.eye} />
-                  </TouchableOpacity>
+                <View style={styles.inputContainer}>
+                  <TextFontFamily style={styles.inputLabel}>Password</TextFontFamily>
+                  <View style={styles.securePassword}>
+                    <TextInput placeholderTextColor="#7c7c7c" placeholder="Type your password" secureTextEntry={securePassword} style={styles.input} />
+                    <TouchableOpacity style={styles.eyeContainer} onPress={handlePassword}>
+                      <Image source={eye} style={styles.eye} resizeMode="contain" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <TextFontFamily style={styles.forgotPassword}>Forgot Password?</TextFontFamily>
               </View>
+
               <Button text="Log In" onPress={validateUser} />
               <View style={[styles.row, styles.singupContainer]}>
               <TextFontFamily style={styles.dontHaveAccount}>Don't have an account?</TextFontFamily>
