@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
     forgotPassword: {
         fontSize: RFValue(14, 896),
         alignSelf: 'flex-end',
-        marginTop: scaleHeight(20),
+        marginBottom: scaleHeight(30),
     },
     dontHaveAccount: {
         color: '#181725',
@@ -90,14 +90,6 @@ export const styles = StyleSheet.create({
     inputIconContainer: {
         justifyContent: 'center',
     },
-    /*eyeContainer: {
-        position: 'absolute',
-        right: 0,
-        height: '100%',
-        justifyContent: 'center',
-        width: scaleWidth(22),
-        alignItems: 'center',
-    },*/
     eye: {
         width: scaleWidth(19.93),
         height: scaleHeight(18.92),

@@ -5,7 +5,6 @@ import { Image, Keyboard, TouchableOpacity, TouchableWithoutFeedback, View } fro
 // npm imports
 import { NavigationAction, NavigationProp, useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import Animated, { Easing, FadeIn, FadeOut, runOnJS } from 'react-native-reanimated';
-import { TextInput } from 'react-native-gesture-handler';
 
 // local imports
 import { RootStackParamsLogin } from '../../navigation/StackLoginModule';
@@ -14,16 +13,16 @@ import TextFontFamily from '../../components/TextFontFamily';
 import { useUserStore } from '../../store/user';
 import Button from '../../components/Button';
 import { styles } from './styles';
+import CustomInput from '../../components/CustomInput';
+import { scaleHeight } from '../../utils/transformDimensions';
 
 const logo = require('../../assets/icons/logo.png');
-const eye = require('../../assets/icons/eye.png');
 
 const FADE_DURATION = 500;
 
 const Login : FC = () => {
   const {hideBackground2, showBackground2, showBlurBackground2, showBackground3, hideBackground3} = useContext(UIContext);
 
-  const [securePassword, setSecurePassword] = useState<boolean>(true);
   const [showContent, setShowContent] = useState<boolean>(true);
   const navigationRef = useRef<NavigationAction | null | string>(null);
 
@@ -59,13 +58,6 @@ const Login : FC = () => {
 
     return unsubscribe;
   }, [navigation]);
-
-  /**
-   * Function to handle secure input in password field.
-   */
-  const handlePassword = () => {
-    setSecurePassword(state => !state);
-  };
 
   /**
    * function to set a route to navigate to signup.
@@ -124,24 +116,23 @@ const Login : FC = () => {
               <TextFontFamily style={styles.title}>Login</TextFontFamily>
               <TextFontFamily style={styles.subtitle}>Enter your emails and password</TextFontFamily>
 
-
-              <View style={styles.inputContainer}>
-                <TextFontFamily style={styles.inputLabel}>Email</TextFontFamily>
-                <TextInput placeholderTextColor="#7c7c7c" placeholder="Type your e-mail" style={styles.input} />
-              </View>
-
-              <View style={styles.passwordcontainer}>
-                <View style={styles.inputContainer}>
-                  <TextFontFamily style={styles.inputLabel}>Password</TextFontFamily>
-                  <View style={styles.securePassword}>
-                    <TextInput placeholderTextColor="#7c7c7c" placeholder="Type your password" secureTextEntry={securePassword} style={styles.input} />
-                    <TouchableOpacity style={styles.eyeContainer} onPress={handlePassword}>
-                      <Image source={eye} style={styles.eye} resizeMode="contain" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <TextFontFamily style={styles.forgotPassword}>Forgot Password?</TextFontFamily>
-              </View>
+              <CustomInput
+                label="Email"
+                letterSpacing={0}
+                hasSecureMode={false}
+                placeholder="Type your e-mail"
+                onChange={() => {}}
+                marginBottom={scaleHeight(30)}
+              />
+              <CustomInput
+                label="Password"
+                letterSpacing={0}
+                hasSecureMode={true}
+                placeholder="Type your password"
+                onChange={() => {}}
+                marginBottom={scaleHeight(20)}
+              />
+              <TextFontFamily style={styles.forgotPassword}>Forgot Password?</TextFontFamily>
 
               <Button text="Log In" onPress={validateUser} />
               <View style={[styles.row, styles.singupContainer]}>
@@ -158,3 +149,7 @@ const Login : FC = () => {
 };
 
 export default Login;
+
+/*
+
+*/
