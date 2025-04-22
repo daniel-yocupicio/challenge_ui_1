@@ -132,20 +132,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-//               <Button text="Sing Up" onPress={() => {}} />
-
-/*
-              <View style={styles.passwordcontainer}>
-                <View style={styles.inputContainer}>
-                  <TextFontFamily style={styles.inputLabel}>Password</TextFontFamily>
-                  <View style={styles.securePassword}>
-                    <TextInput placeholderTextColor="#7c7c7c" placeholder="Type your password" secureTextEntry={securePassword} style={styles.input} />
-                    <TouchableOpacity style={styles.eyeContainer} onPress={handlePassword}>
-                      <Image source={eye} style={styles.eye} resizeMode="contain" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <TextFontFamily style={styles.forgotPassword}>By continuing you agree to out <TextFontFamily style={styles.greenText}>Terms of Service</TextFontFamily> and <TextFontFamily style={styles.greenText}>Privacy Policy</TextFontFamily> </TextFontFamily>
-              </View>
-*/
