@@ -17,7 +17,7 @@ function StackNavigator() {
   const isLoged = useUserStore((state) => state.isLoged);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer onStateChange={e => console.log(e)}>
       <Stack.Navigator>
         {isLoged ? (
           <Stack.Screen name="AppStack" component={AppStack} options={{headerShown: false, cardStyle: {backgroundColor: 'transparent'}}} />

@@ -94,4 +94,14 @@ export const styles = StyleSheet.create({
         width: scaleWidth(19.93),
         height: scaleHeight(18.92),
     },
+    termsText: {
+        fontFamily: 'NotoSans-VariableFont_wdth,wght',
+        fontSize: RFValue(14, 896),
+        width: scaleWidth(364.12),
+        color: '#7c7c7c',
+        marginBottom: scaleHeight(30.03),
+    },
+    green: {
+        color: '#53b175',
+    },
 });

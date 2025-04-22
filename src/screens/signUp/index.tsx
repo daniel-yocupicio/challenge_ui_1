@@ -46,14 +46,6 @@ const SignUp = () => {
   }, [navigation]);
 
   /**
-   * function to set a route to navigate to signup.
-   */
-  const goToSignUp = () => {
-    setShowContent(false);
-    navigationRef.current = 'SignUp';
-  };
-
-  /**
    * function to set a route to navigate to home
    */
   const validateUser = () => {
@@ -75,9 +67,6 @@ const SignUp = () => {
           // change state to update the navigator and load a dinamic stack
           login();
 
-        } else if (navigationRef.current === 'SignUp') {
-          navigation.navigate('SignUp');
-          navigationRef.current = null;
         }
       }
     };
@@ -124,11 +113,15 @@ const SignUp = () => {
                 marginBottom={scaleHeight(20)}
               />
 
-              <Button text="Log In" onPress={validateUser} />
+              <TextFontFamily style={styles.termsText}>
+                By continuing you agree to out <TextFontFamily style={styles.green}>Terms of Service</TextFontFamily> and <TextFontFamily style={styles.green}>Privacy Policy</TextFontFamily>
+              </TextFontFamily>
+
+              <Button text="Sing Up" onPress={validateUser} />
               <View style={[styles.row, styles.singupContainer]}>
-              <TextFontFamily style={styles.dontHaveAccount}>Don't have an account?</TextFontFamily>
-              <TouchableOpacity onPress={goToSignUp}>
-                <TextFontFamily style={styles.singup}> Singup</TextFontFamily>
+              <TextFontFamily style={styles.dontHaveAccount}>Already have an account?</TextFontFamily>
+              <TouchableOpacity onPress={navigation.goBack}>
+                <TextFontFamily style={styles.singup}> Login</TextFontFamily>
               </TouchableOpacity>
               </View>
           </Animated.View>
