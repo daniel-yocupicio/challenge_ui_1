@@ -1,33 +1,39 @@
 // npm imports
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // local imports
-import Home from '../../screens/Home';
-import { useNavigation } from '@react-navigation/native';
+import Shop from '../../screens/Shop';
+import Explore from '../../screens/Explore';
+import Cart from '../../screens/Cart';
+import Favorite from '../../screens/Favorite';
+import Account from '../../screens/Account';
 
 
 export type RootStackParamsApp = {
-    Home: {},
+    Shop: {},
+    Explore: {},
+    Cart: {},
+    Favorite: {},
+    Account: {},
 }
 
-const Stack = createStackNavigator<RootStackParamsApp>();
+const Stack = createBottomTabNavigator<RootStackParamsApp>();
 
 function AppStack() {
-  console.log('appstack');
-  const navigation = useNavigation();
-
-  console.log(navigation.getState());
-
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         animation: 'none',
-        cardStyle: {backgroundColor: 'transparent'},
       }}
-      initialRouteName="Home"
+      initialRouteName="Shop"
     >
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Shop" component={Shop} />
+      <Stack.Screen name="Explore" component={Explore} />
+      <Stack.Screen name="Cart" component={Cart} />
+      <Stack.Screen name="Favorite" component={Favorite} />
+      <Stack.Screen name="Account" component={Account} />
+
     </Stack.Navigator>
   );
 }
